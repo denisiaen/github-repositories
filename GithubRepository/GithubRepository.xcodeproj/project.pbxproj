@@ -81,8 +81,7 @@
 			children = (
 				AF11F5F32A447889006B13DC /* SceneDelegate.swift */,
 				AF11F62C2A447C12006B13DC /* AppDelegate.swift */,
-				AF11F6302A448913006B13DC /* RepositoryItem.swift */,
-				AF11F6322A448BCA006B13DC /* RepositoriesLoader.swift */,
+				AF11F6342A448F66006B13DC /* Repositories Feature */,
 				AF11F5F52A447889006B13DC /* ContentView.swift */,
 				AF11F5F72A44788A006B13DC /* Assets.xcassets */,
 				AF11F5F92A44788A006B13DC /* Preview Content */,
@@ -104,6 +103,15 @@
 				AF11F6042A44788A006B13DC /* GithubRepositoryTests.swift */,
 			);
 			path = GithubRepositoryTests;
+			sourceTree = "<group>";
+		};
+		AF11F6342A448F66006B13DC /* Repositories Feature */ = {
+			isa = PBXGroup;
+			children = (
+				AF11F6302A448913006B13DC /* RepositoryItem.swift */,
+				AF11F6322A448BCA006B13DC /* RepositoriesLoader.swift */,
+			);
+			path = "Repositories Feature";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
