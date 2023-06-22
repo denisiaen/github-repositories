@@ -139,9 +139,11 @@ final class APIRepositoriesLoaderTests: XCTestCase {
         
     // MARK: - Helpers
     
-    private func makeSUT(url: URL = URL(string: "https://a-url")!) -> (sut: APIRepositoriesLoader, client: HTTPClientSpy) {
+    private func makeSUT(url: URL = URL(string: "https://a-url")!, file: StaticString = #filePath, line: UInt = #line) -> (sut: APIRepositoriesLoader, client: HTTPClientSpy) {
         let client = HTTPClientSpy()
         let sut = APIRepositoriesLoader(client: client, url: url)
+        trackForMemoryLeaks(sut, file: file, line: line)
+        trackForMemoryLeaks(client, file: file, line: line)
         return (sut, client)
     }
     
@@ -153,4 +155,13 @@ final class APIRepositoriesLoaderTests: XCTestCase {
         
         XCTAssertEqual(capturedResults, [result], file: file, line: line)
     }
+    
+    private func trackForMemoryLeaks(_ instance: AnyObject, file: StaticString = #filePath, line: UInt = #line) {
+        // when every test finishes running, then this block is invoked
+        addTeardownBlock { [weak instance] in
+            // make sure instance is gonna be nil after each test runs
+            XCTAssertNil(instance, "Instance should have been deallocated. Potential memory leak.", file: file, line: line)
+        }
+    }
+
 }
