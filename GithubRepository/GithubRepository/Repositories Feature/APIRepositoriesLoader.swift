@@ -24,7 +24,7 @@ public class APIRepositoriesLoader {
         self.url = url
     }
     
-    public func load(completion: @escaping (Error?) -> Void) {
+    public func load(completion: @escaping (Error) -> Void) {
         client.get(from: url) { _ in
             completion(.connectivity)
         }

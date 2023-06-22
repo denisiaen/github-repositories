@@ -51,14 +51,14 @@ final class APIRepositoriesLoaderTests: XCTestCase {
         let (sut, client) = makeSUT()
         client.error = NSError(domain: "any-error", code: 0)
         
-        var receivedError: APIRepositoriesLoader.Error?
+        var receivedError = [APIRepositoriesLoader.Error]()
         sut.load { error in
-            receivedError = error
+            receivedError.append(error)
         }
         
-        XCTAssertEqual(receivedError, .connectivity)
+        XCTAssertEqual(receivedError, [.connectivity])
     }
-    
+        
     // MARK: - Helpers
     
     private func makeSUT(url: URL = URL(string: "https://a-url")!) -> (sut: APIRepositoriesLoader, client: HTTPClientSpy) {
