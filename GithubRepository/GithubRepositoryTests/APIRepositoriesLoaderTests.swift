@@ -10,8 +10,12 @@ import GithubRepository
 
 class HTTPClientSpy: HTTPClient {
     var requestedURLs = [URL]()
+    var error: Error?
     
-    func get(from url: URL) {
+    func get(from url: URL, completion: (Error) -> Void) {
+        if let error = error {
+            completion(error)
+        }
         requestedURLs.append(url)
     }
 }
@@ -28,8 +32,8 @@ final class APIRepositoriesLoaderTests: XCTestCase {
         let url = URL(string: "https://a-given-url")!
         let (sut, client) = makeSUT(url: url)
 
-        sut.load()
-        
+        sut.load { _ in }
+
         XCTAssertEqual(client.requestedURLs, [url])
     }
     
@@ -37,10 +41,22 @@ final class APIRepositoriesLoaderTests: XCTestCase {
         let url = URL(string: "https://a-given-url")!
         let (sut, client) = makeSUT(url: url)
 
-        sut.load()
-        sut.load()
-        
+        sut.load { _ in }
+        sut.load { _ in }
+
         XCTAssertEqual(client.requestedURLs, [url, url])
+    }
+    
+    func test_load_deliversErrorOnClientError() {
+        let (sut, client) = makeSUT()
+        client.error = NSError(domain: "any-error", code: 0)
+        
+        var receivedError: APIRepositoriesLoader.Error?
+        sut.load { error in
+            receivedError = error
+        }
+        
+        XCTAssertEqual(receivedError, .connectivity)
     }
     
     // MARK: - Helpers
