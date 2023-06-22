@@ -41,8 +41,8 @@ public class APIRepositoriesLoader {
             case .failure:
                 completion(.failure(.connectivity))
             case let .success(data, response):
-                if response.statusCode == 200, let _ = try? JSONDecoder().decode(Root.self, from: data) {
-                    completion(.success([]))
+                if response.statusCode == 200, let root = try? JSONDecoder().decode(Root.self, from: data) {
+                    completion(.success(root.items.map { $0.repositoryItem }))
                 } else {
                     completion(.failure(Error.invalidData))
                 }

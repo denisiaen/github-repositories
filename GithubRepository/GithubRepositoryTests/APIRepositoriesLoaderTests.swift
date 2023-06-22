@@ -64,7 +64,7 @@ final class APIRepositoriesLoaderTests: XCTestCase {
     func test_load_deliversErrorOnClientError() {
         let (sut, client) = makeSUT()
         
-        expect(sut, toCompleteWithError: .connectivity) {
+        expect(sut, toCompleteWith: .failure(.connectivity)) {
             let clientError = NSError(domain: "any-error", code: 0)
             client.complete(with: clientError)
         }
@@ -75,7 +75,7 @@ final class APIRepositoriesLoaderTests: XCTestCase {
         let samples = [199, 201, 300, 400, 500]
         
         samples.enumerated().forEach { (index, code) in
-            expect(sut, toCompleteWithError: .invalidData) {
+            expect(sut, toCompleteWith: .failure(.invalidData)) {
                 client.complete(withStatusCode: code, at: index)
             }
         }
@@ -84,7 +84,7 @@ final class APIRepositoriesLoaderTests: XCTestCase {
     func test_load_deliversErrorOn200HTTPResponseWithInvalidJSON() {
         let (sut, client) = makeSUT()
         
-        expect(sut, toCompleteWithError: .invalidData) {
+        expect(sut, toCompleteWith: .failure(.invalidData)) {
             let invalidJSON = Data("invalid data".utf8)
             client.complete(withStatusCode: 200, data: invalidJSON)
         }
@@ -92,14 +92,49 @@ final class APIRepositoriesLoaderTests: XCTestCase {
     
     func test_load_deliversNoItemsOn200HTTPResponseWithEmptyJSONList() {
         let (sut, client) = makeSUT()
+        
+        expect(sut, toCompleteWith: .success([])) {
+            let emptyListJSON = Data("{\"items\": []}".utf8)
+            client.complete(withStatusCode: 200, data: emptyListJSON)
+        }
+    }
+    
+    func test_load_deliversItemsOn200HTTPResponseWithJSONItems() {
+        let (sut, client) = makeSUT()
 
-        var capturedResults = [APIRepositoriesLoader.Result]()
-        sut.load { capturedResults.append($0) }
+        let item1 = RepositoryItem(id: UUID(), userName: "A Name", imageURL: URL(string: "http://a-url.com")!, repositoryName: "Repo Name", description: nil, language: nil, stars: nil)
         
-        let emptyListJSON = Data("{\"items\": []}".utf8)
-        client.complete(withStatusCode: 200, data: emptyListJSON)
+        let item2 = RepositoryItem(id: UUID(), userName: "A Name", imageURL: URL(string: "http://a-url.com")!, repositoryName: "Repo Name", description: "description", language: "language", stars: 3)
         
-        XCTAssertEqual(capturedResults, [.success([])])
+        let itemsJSON = """
+        {
+            "items": [
+                {
+                    "id": "\(item1.id.uuidString)",
+                    "name": "\(item1.repositoryName)",
+                    "owner": {
+                        "login": "\(item1.userName)",
+                        "avatar_url": "\(item1.imageURL)"
+                    }
+                },
+                {
+                    "id": "\(item2.id.uuidString)",
+                    "name": "\(item2.repositoryName)",
+                    "description": "\(item2.description ?? "")",
+                    "language": "\(item2.language ?? "")",
+                    "stargazers_count": \(item2.stars ?? 0),
+                    "owner": {
+                        "login": "\(item2.userName)",
+                        "avatar_url": "\(item2.imageURL)"
+                    }
+                }
+            ]
+        }
+        """.data(using: .utf8)!
+        
+        expect(sut, toCompleteWith: .success([item1, item2])) {
+            client.complete(withStatusCode: 200, data: itemsJSON)
+        }
     }
         
     // MARK: - Helpers
@@ -110,12 +145,12 @@ final class APIRepositoriesLoaderTests: XCTestCase {
         return (sut, client)
     }
     
-    private func expect(_ sut: APIRepositoriesLoader, toCompleteWithError error: APIRepositoriesLoader.Error, when action: () -> Void, file: StaticString = #filePath, line: UInt = #line) {
+    private func expect(_ sut: APIRepositoriesLoader, toCompleteWith result: APIRepositoriesLoader.Result, when action: () -> Void, file: StaticString = #filePath, line: UInt = #line) {
         var capturedResults = [APIRepositoriesLoader.Result]()
         sut.load { capturedResults.append($0) }
         
         action()
         
-        XCTAssertEqual(capturedResults, [.failure(error)], file: file, line: line)
+        XCTAssertEqual(capturedResults, [result], file: file, line: line)
     }
 }
