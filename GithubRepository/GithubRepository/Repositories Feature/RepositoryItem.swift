@@ -14,5 +14,5 @@ public struct RepositoryItem: Equatable {
     let repositoryName: String
     let description: String?
     let language: String?
-    let starts: Int?
+    let stars: Int?
 }
