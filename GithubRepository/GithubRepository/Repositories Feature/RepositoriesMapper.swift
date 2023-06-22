@@ -9,7 +9,11 @@ import Foundation
 
 public final class RepositoriesMapper {
     private struct Root: Decodable {
-        let items: [Repository]
+        private let items: [Repository]
+        
+        var repositories: [RepositoryItem] {
+            items.map { $0.repositoryItem }
+        }
         
         struct Repository: Decodable {
             enum CodingKeys: String, CodingKey {
@@ -54,6 +58,6 @@ public final class RepositoriesMapper {
             return .failure(APIRepositoriesLoader.Error.invalidData)
         }
         
-        return .success(root.items.map { $0.repositoryItem })
+        return .success(root.repositories)
     }
 }
