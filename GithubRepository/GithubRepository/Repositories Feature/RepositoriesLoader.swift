@@ -7,9 +7,9 @@
 
 import Foundation
 
-enum LoadRepositoriesResult {
+public enum LoadRepositoriesResult {
     case success([RepositoryItem])
-    case error(Error)
+    case failure(Error)
 }
 
 protocol RepositoriesLoader {

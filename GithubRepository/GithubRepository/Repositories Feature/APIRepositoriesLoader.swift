@@ -16,7 +16,7 @@ public protocol HTTPClient {
     func get(from url: URL, completion: @escaping (HTTPClientResult) -> Void)
 }
 
-public class APIRepositoriesLoader {
+public class APIRepositoriesLoader: RepositoriesLoader {
     private let client: HTTPClient
     private let url: URL
     
@@ -25,10 +25,7 @@ public class APIRepositoriesLoader {
         case invalidData
     }
     
-    public enum Result: Equatable {
-        case success([RepositoryItem])
-        case failure(Error)
-    }
+    public typealias Result = LoadRepositoriesResult
     
     public init(client: HTTPClient, url: URL) {
         self.client = client
@@ -40,7 +37,7 @@ public class APIRepositoriesLoader {
             guard self != nil else { return }
             switch result {
             case .failure:
-                completion(.failure(.connectivity))
+                completion(.failure(Error.connectivity))
             case let .success(data, response):
                 completion(RepositoriesMapper.map(data, response))
             }
