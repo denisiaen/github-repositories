@@ -14,6 +14,7 @@
 		AF11F6052A44788A006B13DC /* GithubRepositoryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF11F6042A44788A006B13DC /* GithubRepositoryTests.swift */; };
 		AF11F62D2A447C12006B13DC /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF11F62C2A447C12006B13DC /* AppDelegate.swift */; };
 		AF11F6312A448913006B13DC /* RepositoryItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF11F6302A448913006B13DC /* RepositoryItem.swift */; };
+		AF11F6332A448BCA006B13DC /* RepositoriesLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF11F6322A448BCA006B13DC /* RepositoriesLoader.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -36,6 +37,7 @@
 		AF11F6042A44788A006B13DC /* GithubRepositoryTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GithubRepositoryTests.swift; sourceTree = "<group>"; };
 		AF11F62C2A447C12006B13DC /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		AF11F6302A448913006B13DC /* RepositoryItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RepositoryItem.swift; sourceTree = "<group>"; };
+		AF11F6322A448BCA006B13DC /* RepositoriesLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RepositoriesLoader.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -80,6 +82,7 @@
 				AF11F5F32A447889006B13DC /* SceneDelegate.swift */,
 				AF11F62C2A447C12006B13DC /* AppDelegate.swift */,
 				AF11F6302A448913006B13DC /* RepositoryItem.swift */,
+				AF11F6322A448BCA006B13DC /* RepositoriesLoader.swift */,
 				AF11F5F52A447889006B13DC /* ContentView.swift */,
 				AF11F5F72A44788A006B13DC /* Assets.xcassets */,
 				AF11F5F92A44788A006B13DC /* Preview Content */,
@@ -204,6 +207,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				AF11F62D2A447C12006B13DC /* AppDelegate.swift in Sources */,
+				AF11F6332A448BCA006B13DC /* RepositoriesLoader.swift in Sources */,
 				AF11F5F62A447889006B13DC /* ContentView.swift in Sources */,
 				AF11F6312A448913006B13DC /* RepositoryItem.swift in Sources */,
 				AF11F5F42A447889006B13DC /* SceneDelegate.swift in Sources */,
