@@ -75,13 +75,14 @@ final class APIRepositoriesLoaderTests: XCTestCase {
     
     func test_load_deliversErrorOnNon200HTTPResponse() {
         let (sut, client) = makeSUT()
+        let samples = [199, 201, 300, 400, 500]
         
-        var receivedError = [APIRepositoriesLoader.Error]()
-        sut.load { receivedError.append($0) }
-        
-        client.complete(withStatusCode: 400)
-        
-        XCTAssertEqual(receivedError, [.invalidData])
+        samples.enumerated().forEach { (index, code) in
+            var capturedError = [APIRepositoriesLoader.Error]()
+            sut.load { capturedError.append($0) }
+            client.complete(withStatusCode: code, at: index)
+            XCTAssertEqual(capturedError, [.invalidData])
+        }
     }
         
     // MARK: - Helpers
