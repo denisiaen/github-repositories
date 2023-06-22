@@ -99,11 +99,11 @@ final class APIRepositoriesLoaderTests: XCTestCase {
     }
     
     private func expect(_ sut: APIRepositoriesLoader, toCompleteWithError error: APIRepositoriesLoader.Error, when action: () -> Void, file: StaticString = #filePath, line: UInt = #line) {
-        var capturedError = [APIRepositoriesLoader.Error]()
-        sut.load { capturedError.append($0) }
+        var capturedResults = [APIRepositoriesLoader.Result]()
+        sut.load { capturedResults.append($0) }
         
         action()
         
-        XCTAssertEqual(capturedError, [error], file: file, line: line)
+        XCTAssertEqual(capturedResults, [.failure(error)], file: file, line: line)
     }
 }

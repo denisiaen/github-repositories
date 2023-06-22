@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct RepositoryItem {
+public struct RepositoryItem: Equatable {
     let id: UUID
     let userName: String
     let imageURL: URL
