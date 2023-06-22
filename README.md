@@ -28,7 +28,7 @@ I want the app to show the latest version of trending github repositories
 So I can browse through the list of repositories
 ```
 
-#### Scenatios (Acceptance criteria)
+#### Scenarios (Acceptance criteria)
 
 ```
 Given the customer doesn't have connectivity
@@ -41,5 +41,5 @@ Then the app should display the latest repositories saved
 Given the customer doesn't have connectivity
  And the cache is empty
 When the customer requests to see the repositories
-Then the app shoul display an error message
+Then the app should display an error message
 ```
