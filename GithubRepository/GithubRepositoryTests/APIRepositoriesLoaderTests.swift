@@ -136,6 +136,21 @@ final class APIRepositoriesLoaderTests: XCTestCase {
             client.complete(withStatusCode: 200, data: itemsJSON)
         }
     }
+    
+    
+    func test_load_doesNotDeliverResultAfterSUTInstanceHasBeenDeallocated() {
+        let url = URL(string: "http://any-url.com")!
+        let client = HTTPClientSpy()
+        var sut: APIRepositoriesLoader? = APIRepositoriesLoader(client: client, url: url)
+        
+        var capturedResults = [APIRepositoriesLoader.Result]()
+        sut?.load { capturedResults.append($0) }
+        
+        sut = nil
+        client.complete(withStatusCode: 200, data: makeEmptyItemsJSON())
+                
+        XCTAssertTrue(capturedResults.isEmpty)
+    }
         
     // MARK: - Helpers
     
@@ -163,5 +178,9 @@ final class APIRepositoriesLoaderTests: XCTestCase {
             XCTAssertNil(instance, "Instance should have been deallocated. Potential memory leak.", file: file, line: line)
         }
     }
-
+    
+    private func makeEmptyItemsJSON() -> Data {
+        let itemsJSON = ["items": [[String: Any]]()]
+        return try! JSONSerialization.data(withJSONObject: itemsJSON)
+    }
 }
