@@ -16,6 +16,10 @@ class HTTPClientSpy: HTTPClient {
         completions.append(completion)
         requestedURLs.append(url)
     }
+    
+    func complete(with error: Error, at index: Int = 0) {
+        completions[0](error)
+    }
 }
 
 final class APIRepositoriesLoaderTests: XCTestCase {
@@ -54,7 +58,7 @@ final class APIRepositoriesLoaderTests: XCTestCase {
         }
         
         let clientError = NSError(domain: "any-error", code: 0)
-        client.completions[0](clientError)
+        client.complete(with: clientError)
         
         XCTAssertEqual(receivedError, [.connectivity])
     }
