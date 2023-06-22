@@ -64,13 +64,10 @@ final class APIRepositoriesLoaderTests: XCTestCase {
     func test_load_deliversErrorOnClientError() {
         let (sut, client) = makeSUT()
         
-        var receivedError = [APIRepositoriesLoader.Error]()
-        sut.load { receivedError.append($0) }
-        
-        let clientError = NSError(domain: "any-error", code: 0)
-        client.complete(with: clientError)
-        
-        XCTAssertEqual(receivedError, [.connectivity])
+        expect(sut, toCompleteWithError: .connectivity) {
+            let clientError = NSError(domain: "any-error", code: 0)
+            client.complete(with: clientError)
+        }
     }
     
     func test_load_deliversErrorOnNon200HTTPResponse() {
@@ -78,23 +75,19 @@ final class APIRepositoriesLoaderTests: XCTestCase {
         let samples = [199, 201, 300, 400, 500]
         
         samples.enumerated().forEach { (index, code) in
-            var capturedError = [APIRepositoriesLoader.Error]()
-            sut.load { capturedError.append($0) }
-            client.complete(withStatusCode: code, at: index)
-            XCTAssertEqual(capturedError, [.invalidData])
+            expect(sut, toCompleteWithError: .invalidData) {
+                client.complete(withStatusCode: code, at: index)
+            }
         }
     }
     
     func test_load_deliversErrorOn200HTTPResponseWithInvalidJSON() {
         let (sut, client) = makeSUT()
         
-        var receivedError = [APIRepositoriesLoader.Error]()
-        sut.load { receivedError.append($0) }
-        
-        let invalidJSON = Data("invalid data".utf8)
-        client.complete(withStatusCode: 200, data: invalidJSON)
-
-        XCTAssertEqual(receivedError, [.invalidData])
+        expect(sut, toCompleteWithError: .invalidData) {
+            let invalidJSON = Data("invalid data".utf8)
+            client.complete(withStatusCode: 200, data: invalidJSON)
+        }
     }
         
     // MARK: - Helpers
@@ -103,5 +96,14 @@ final class APIRepositoriesLoaderTests: XCTestCase {
         let client = HTTPClientSpy()
         let sut = APIRepositoriesLoader(client: client, url: url)
         return (sut, client)
+    }
+    
+    private func expect(_ sut: APIRepositoriesLoader, toCompleteWithError error: APIRepositoriesLoader.Error, when action: () -> Void, file: StaticString = #filePath, line: UInt = #line) {
+        var capturedError = [APIRepositoriesLoader.Error]()
+        sut.load { capturedError.append($0) }
+        
+        action()
+        
+        XCTAssertEqual(capturedError, [error], file: file, line: line)
     }
 }
