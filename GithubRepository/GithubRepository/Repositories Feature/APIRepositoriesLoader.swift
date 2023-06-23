@@ -13,7 +13,7 @@ public enum HTTPClientResult {
 }
 
 public protocol HTTPClient {
-    func get(from url: URL, completion: @escaping (HTTPClientResult) -> Void)
+    func get(from url: URL) async throws -> (Data, HTTPURLResponse)
 }
 
 public class APIRepositoriesLoader: RepositoriesLoader {
@@ -32,15 +32,11 @@ public class APIRepositoriesLoader: RepositoriesLoader {
         self.url = url
     }
     
-    public func load(completion: @escaping (Result) -> Void) {
-        client.get(from: url) { [weak self] result in
-            guard self != nil else { return }
-            switch result {
-            case .failure:
-                completion(.failure(Error.connectivity))
-            case let .success(data, response):
-                completion(RepositoriesMapper.map(data, response))
-            }
+    public func load() async throws -> [RepositoryItem] {
+        guard let (data, response) = try? await client.get(from: url) else {
+            throw Error.connectivity
         }
+        
+        return try RepositoriesMapper.map(data, response)
     }
 }

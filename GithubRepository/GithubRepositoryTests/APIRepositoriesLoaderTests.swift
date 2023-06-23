@@ -9,28 +9,17 @@ import XCTest
 import GithubRepository
 
 class HTTPClientSpy: HTTPClient {
-    private var messages = [(url: URL, completion: (HTTPClientResult) -> Void)]()
+    private(set) var requestedURLs = [URL]()
     
-    var requestedURLs: [URL] {
-        messages.map { $0.url }
+    let result: Result<(Data, HTTPURLResponse), Error>
+    
+    init(result: Result<(Data, HTTPURLResponse), Error>) {
+        self.result = result
     }
     
-    func get(from url: URL, completion: @escaping (HTTPClientResult) -> Void) {
-        messages.append((url, completion))
-    }
-    
-    func complete(with error: Error, at index: Int = 0) {
-        messages[index].completion(.failure(error))
-    }
-    
-    func complete(withStatusCode code: Int, data: Data = Data(), at index: Int = 0) {
-        let response = HTTPURLResponse(
-            url: requestedURLs[index],
-            statusCode: code,
-            httpVersion: nil,
-            headerFields: nil
-        )!
-        messages[index].completion(.success(data, response))
+    func get(from url: URL) async throws -> (Data, HTTPURLResponse) {
+        requestedURLs.append(url)
+        return try result.get()
     }
 }
 
@@ -42,70 +31,59 @@ final class APIRepositoriesLoaderTests: XCTestCase {
         XCTAssertTrue(client.requestedURLs.isEmpty)
     }
 
-    func test_load_requestsDataFromURL() {
+    func test_load_requestsDataFromURL() async throws {
         let url = URL(string: "https://a-given-url")!
-        let (sut, client) = makeSUT(url: url)
+        let (sut, client) = makeSUT(url: url, result: .success(anyValidResponse()))
 
-        sut.load { _ in }
+        _ = try await sut.load()
 
         XCTAssertEqual(client.requestedURLs, [url])
     }
-    
-    func test_loadTwice_requestsDataFromURLTwice() {
+
+    func test_loadTwice_requestsDataFromURLTwice() async throws {
         let url = URL(string: "https://a-given-url")!
-        let (sut, client) = makeSUT(url: url)
-
-        sut.load { _ in }
-        sut.load { _ in }
-
+        let (sut, client) = makeSUT(url: url, result: .success(anyValidResponse()))
+        
+        _ = try await sut.load()
+        _ = try await sut.load()
+        
         XCTAssertEqual(client.requestedURLs, [url, url])
     }
     
-    func test_load_deliversErrorOnClientError() {
-        let (sut, client) = makeSUT()
+    func test_load_deliversErrorOnClientError() async throws {
+        let (sut, _) = makeSUT(result: .failure(anyError()))
         
-        expect(sut, toCompleteWith: failure(.connectivity)) {
-            let clientError = NSError(domain: "any-error", code: 0)
-            client.complete(with: clientError)
-        }
+        await expect(sut, toThrowError: .connectivity)
     }
-    
-    func test_load_deliversErrorOnNon200HTTPResponse() {
-        let (sut, client) = makeSUT()
+
+    func test_load_deliversErrorOnNon200HTTPResponse() async throws {
         let samples = [199, 201, 300, 400, 500]
         
-        samples.enumerated().forEach { (index, code) in
-            expect(sut, toCompleteWith: failure(.invalidData)) {
-                client.complete(withStatusCode: code, at: index)
-            }
+        for code in samples {
+            let non200Response = (Data(), httpResponse(code: code))
+            let (sut, _) = makeSUT(result: .success(non200Response))
+            await expect(sut, toThrowError: .invalidData)
         }
     }
-    
-    func test_load_deliversErrorOn200HTTPResponseWithInvalidJSON() {
-        let (sut, client) = makeSUT()
-        
-        expect(sut, toCompleteWith: failure(.invalidData)) {
-            let invalidJSON = Data("invalid data".utf8)
-            client.complete(withStatusCode: 200, data: invalidJSON)
-        }
-    }
-    
-    func test_load_deliversNoItemsOn200HTTPResponseWithEmptyJSONList() {
-        let (sut, client) = makeSUT()
-        
-        expect(sut, toCompleteWith: .success([])) {
-            let emptyListJSON = Data("{\"items\": []}".utf8)
-            client.complete(withStatusCode: 200, data: emptyListJSON)
-        }
-    }
-    
-    func test_load_deliversItemsOn200HTTPResponseWithJSONItems() {
-        let (sut, client) = makeSUT()
 
+    func test_load_deliversErrorOn200HTTPResponseWithInvalidJSON() async throws {
+        let invalidJSON = Data("invalid data".utf8)
+        let (sut, _) = makeSUT(result: .success((invalidJSON, anyValidResponse())))
+        
+        await expect(sut, toThrowError: .invalidData)
+    }
+
+    func test_load_deliversNoItemsOn200HTTPResponseWithEmptyJSONList() async throws {
+        let (sut, _) = makeSUT(result: .success((emptyItemsJSON(), anyValidResponse())))
+        
+        await expect(sut, toSucceedWith: [])
+    }
+    
+    func test_load_deliversItemsOn200HTTPResponseWithJSONItems() async throws {
         let item1 = RepositoryItem(id: UUID(), userName: "A Name", imageURL: URL(string: "http://a-url.com")!, repositoryName: "Repo Name", description: nil, language: nil, stars: nil)
-        
+
         let item2 = RepositoryItem(id: UUID(), userName: "A Name", imageURL: URL(string: "http://a-url.com")!, repositoryName: "Repo Name", description: "description", language: "language", stars: 3)
-        
+
         let itemsJSON = """
         {
             "items": [
@@ -132,54 +110,19 @@ final class APIRepositoriesLoaderTests: XCTestCase {
         }
         """.data(using: .utf8)!
         
-        expect(sut, toCompleteWith: .success([item1, item2])) {
-            client.complete(withStatusCode: 200, data: itemsJSON)
-        }
-    }
-    
-    
-    func test_load_doesNotDeliverResultAfterSUTInstanceHasBeenDeallocated() {
-        let url = URL(string: "http://any-url.com")!
-        let client = HTTPClientSpy()
-        var sut: APIRepositoriesLoader? = APIRepositoriesLoader(client: client, url: url)
-        
-        var capturedResults = [APIRepositoriesLoader.Result]()
-        sut?.load { capturedResults.append($0) }
-        
-        sut = nil
-        client.complete(withStatusCode: 200, data: makeEmptyItemsJSON())
-                
-        XCTAssertTrue(capturedResults.isEmpty)
+        let (sut, _) = makeSUT(result: .success((itemsJSON, anyValidResponse())))
+
+        await expect(sut, toSucceedWith: [item1, item2])
     }
         
     // MARK: - Helpers
     
-    private func makeSUT(url: URL = URL(string: "https://a-url")!, file: StaticString = #filePath, line: UInt = #line) -> (sut: APIRepositoriesLoader, client: HTTPClientSpy) {
-        let client = HTTPClientSpy()
+    private func makeSUT(url: URL = URL(string: "https://a-url")!, result: Result<(Data, HTTPURLResponse), Error> = .success((Data(), HTTPURLResponse())), file: StaticString = #filePath, line: UInt = #line) -> (sut: APIRepositoriesLoader, client: HTTPClientSpy) {
+        let client = HTTPClientSpy(result: result)
         let sut = APIRepositoriesLoader(client: client, url: url)
         trackForMemoryLeaks(sut, file: file, line: line)
         trackForMemoryLeaks(client, file: file, line: line)
         return (sut, client)
-    }
-    
-    private func expect(_ sut: APIRepositoriesLoader, toCompleteWith expectedResult: APIRepositoriesLoader.Result, when action: () -> Void, file: StaticString = #filePath, line: UInt = #line) {
-        let exp = expectation(description: "Wait for load completion")
-        sut.load { receivedResult in
-            switch (receivedResult, expectedResult) {
-            case let (.success(receivedResult), .success(expectedResult)):
-                XCTAssertEqual(receivedResult, expectedResult, file: file, line: line)
-            case let (.failure(receivedResult as APIRepositoriesLoader.Error), .failure(expectedResult as APIRepositoriesLoader.Error)):
-                XCTAssertEqual(receivedResult, expectedResult, file: file, line: line)
-            default:
-                XCTFail("Expected result \(expectedResult) got \(receivedResult) instead", file: file, line: line)
-            }
-            
-            exp.fulfill()
-        }
-        
-        action()
-        
-        wait(for: [exp], timeout: 1.0)
     }
     
     private func trackForMemoryLeaks(_ instance: AnyObject, file: StaticString = #filePath, line: UInt = #line) {
@@ -190,12 +133,46 @@ final class APIRepositoriesLoaderTests: XCTestCase {
         }
     }
     
-    private func makeEmptyItemsJSON() -> Data {
-        let itemsJSON = ["items": [[String: Any]]()]
-        return try! JSONSerialization.data(withJSONObject: itemsJSON)
+    private func expect(_ sut: APIRepositoriesLoader, toSucceedWith expectedItems: [RepositoryItem]) async {
+        do {
+            let response = try await sut.load()
+            XCTAssertEqual(response, expectedItems)
+        } catch {
+            XCTFail("Expected success, got error: \(error)")
+        }
+    }
+    
+    private func expect(_ sut: APIRepositoriesLoader, toThrowError expectedError: APIRepositoriesLoader.Error) async {
+        do {
+            _ = try await sut.load()
+            XCTFail("Expected error: \(expectedError)")
+        } catch {
+            XCTAssertEqual(error as? APIRepositoriesLoader.Error, expectedError)
+        }
     }
     
     private func failure(_ error: APIRepositoriesLoader.Error) -> APIRepositoriesLoader.Result {
         return .failure(error)
+    }
+    
+    private func anyValidResponse() -> (Data, HTTPURLResponse) {
+        (emptyItemsJSON(), anyValidResponse())
+    }
+    
+    private func emptyItemsJSON() -> Data {
+        Data("{\"items\": []}".utf8)
+    }
+    
+    private func anyValidResponse() -> HTTPURLResponse {
+        httpResponse(code: 200)
+    }
+    
+    private func httpResponse(code: Int) -> HTTPURLResponse {
+        HTTPURLResponse(url: URL(string: "http://any-url.com")!, statusCode: code, httpVersion: nil, headerFields: nil)!
+    }
+    
+    private struct AnyError: Error {}
+    private func anyError() -> Error {
+        AnyError()
     }
 }

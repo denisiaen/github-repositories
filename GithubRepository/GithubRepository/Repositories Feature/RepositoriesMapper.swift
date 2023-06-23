@@ -52,12 +52,12 @@ public final class RepositoriesMapper {
     
     private init() {}
     
-    static func map(_ data: Data, _ response: HTTPURLResponse) -> APIRepositoriesLoader.Result {
+    static func map(_ data: Data, _ response: HTTPURLResponse) throws -> [RepositoryItem] {
         guard response.statusCode == OK_200,
               let root = try? JSONDecoder().decode(Root.self, from: data) else {
-            return .failure(APIRepositoriesLoader.Error.invalidData)
+            throw APIRepositoriesLoader.Error.invalidData
         }
         
-        return .success(root.repositories)
+        return root.repositories
     }
 }

@@ -13,5 +13,5 @@ public enum LoadRepositoriesResult {
 }
 
 protocol RepositoriesLoader {
-    func load(completion: @escaping (LoadRepositoriesResult) -> Void)
+    func load() async throws -> [RepositoryItem]
 }
