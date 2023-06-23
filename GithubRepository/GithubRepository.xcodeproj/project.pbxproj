@@ -18,6 +18,7 @@
 		AF4062502A4493130015C9E0 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = AF40624F2A4493130015C9E0 /* LaunchScreen.storyboard */; };
 		AF4062522A4497CE0015C9E0 /* APIRepositoriesLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF4062512A4497CE0015C9E0 /* APIRepositoriesLoader.swift */; };
 		AF8ABFCB2A44B92B006F5BD2 /* RepositoriesMapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF8ABFCA2A44B92B006F5BD2 /* RepositoriesMapper.swift */; };
+		AFB1E2DF2A45C06D00056D3E /* HTTPClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFB1E2DE2A45C06D00056D3E /* HTTPClient.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -44,6 +45,7 @@
 		AF40624F2A4493130015C9E0 /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = LaunchScreen.storyboard; sourceTree = "<group>"; };
 		AF4062512A4497CE0015C9E0 /* APIRepositoriesLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIRepositoriesLoader.swift; sourceTree = "<group>"; };
 		AF8ABFCA2A44B92B006F5BD2 /* RepositoriesMapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RepositoriesMapper.swift; sourceTree = "<group>"; };
+		AFB1E2DE2A45C06D00056D3E /* HTTPClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HTTPClient.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -116,6 +118,7 @@
 			isa = PBXGroup;
 			children = (
 				AF4062512A4497CE0015C9E0 /* APIRepositoriesLoader.swift */,
+				AFB1E2DE2A45C06D00056D3E /* HTTPClient.swift */,
 				AF8ABFCA2A44B92B006F5BD2 /* RepositoriesMapper.swift */,
 				AF11F6302A448913006B13DC /* RepositoryItem.swift */,
 				AF11F6322A448BCA006B13DC /* RepositoriesLoader.swift */,
@@ -227,6 +230,7 @@
 			files = (
 				AF11F62D2A447C12006B13DC /* AppDelegate.swift in Sources */,
 				AF4062522A4497CE0015C9E0 /* APIRepositoriesLoader.swift in Sources */,
+				AFB1E2DF2A45C06D00056D3E /* HTTPClient.swift in Sources */,
 				AF11F6332A448BCA006B13DC /* RepositoriesLoader.swift in Sources */,
 				AF11F5F62A447889006B13DC /* ContentView.swift in Sources */,
 				AF11F6312A448913006B13DC /* RepositoryItem.swift in Sources */,
