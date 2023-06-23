@@ -27,6 +27,7 @@ class URLSessionHTTPClient: HTTPClient {
     
     func get(from url: URL) async throws -> HTTPResponse {
         let urlRequest = URLRequest(url: url)
+        
         let (data, urlResponse) = try await session.data(for: urlRequest)
         
         guard let httpUrlResponse = urlResponse as? HTTPURLResponse else {
@@ -83,6 +84,18 @@ final class URLSessionHTTPClientTests: XCTestCase {
             XCTAssertTrue(error is UnsupportedURLResponseError)
         }
     }
+    
+    func test_getFromURL_succeedsOnHTTPURLResponseWithData() async throws {
+        let data = anyData()
+        let response = anyValidHTTPResponse()
+        let (sut, _) = makeSUT(result: .success((data, response)))
+        
+        let receivedValues = try await sut.get(from: anyURL())
+        
+        XCTAssertEqual(receivedValues.0, data)
+        XCTAssertEqual(receivedValues.1.url, response.url)
+        XCTAssertEqual(receivedValues.1.statusCode, response.statusCode)
+    }
 
     // MARK: - Helpers
     
@@ -109,10 +122,14 @@ final class URLSessionHTTPClientTests: XCTestCase {
 }
 
 private func anyValidResponse() -> (Data, HTTPURLResponse) {
-    (Data(), anyValidResponse())
+    (Data(), anyValidHTTPResponse())
 }
 
-private func anyValidResponse() -> HTTPURLResponse {
+private func anyData() -> Data {
+    Data("any data".utf8)
+}
+
+private func anyValidHTTPResponse() -> HTTPURLResponse {
     httpResponse(code: 200)
 }
 
