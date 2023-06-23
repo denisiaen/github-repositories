@@ -25,7 +25,7 @@ public class RepositoriesViewModel: ObservableObject {
         do {
             _ = try await repositoriesLoader.load()
         } catch {
-            
+            self.error = error
         }
     }
 }
@@ -48,21 +48,41 @@ final class RepositoriesViewModelTests: XCTestCase {
         XCTAssertEqual(loader.invokedLoadCount, 1)
     }
     
+    func test_viewDidAppear_deliversErrorOnRepositoriesLoadError() async {
+        let (sut, _) = makeSUT(repositoriesLoaderResult: .failure(anyNSError()))
+        
+        await sut.viewDidAppear()
+        
+        XCTAssertNotNil(sut.error)
+    }
+    
     // MARK: - Helpers
     
-    private func makeSUT(file: StaticString = #filePath, line: UInt = #line) -> (viewModel: RepositoriesViewModel, loader: RepositoriesLoaderSpy) {
-        let repositoriesLoaderSpy = RepositoriesLoaderSpy()
-        let sut = RepositoriesViewModel(repositoriesLoader: repositoriesLoaderSpy)
+    private func makeSUT(
+        repositoriesLoaderResult: Result<[RepositoryItem], Error> = .success([anyRepositoryItem()]), file: StaticString = #filePath, line: UInt = #line) -> (viewModel: RepositoriesViewModel, loader: RepositoriesLoaderStub
+        ) {
+        let repositoriesLoaderStub = RepositoriesLoaderStub(result: repositoriesLoaderResult)
+        let sut = RepositoriesViewModel(repositoriesLoader: repositoriesLoaderStub)
         trackForMemoryLeaks(sut, file: file, line: line)
-        return (sut, repositoriesLoaderSpy)
+        return (sut, repositoriesLoaderStub)
     }
 }
 
-private class RepositoriesLoaderSpy: RepositoriesLoader {
+private func anyRepositoryItem() -> RepositoryItem {
+    RepositoryItem(id: UUID(), userName: "A name", imageURL: URL(string: "http://url")!, repositoryName: "A repo", description: nil, language: nil, stars: nil)
+}
+
+private class RepositoriesLoaderStub: RepositoriesLoader {
     var invokedLoadCount = 0
+    
+    private var result: Result<[RepositoryItem], Error>
+    
+    init(result: Result<[RepositoryItem], Error>) {
+        self.result = result
+    }
     
     func load() async throws -> [RepositoryItem] {
         invokedLoadCount += 1
-        return []
+        return try result.get()
     }
 }
