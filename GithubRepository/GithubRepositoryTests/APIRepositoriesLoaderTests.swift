@@ -53,13 +53,13 @@ final class APIRepositoriesLoaderTests: XCTestCase {
 
     func test_load_deliversErrorOn200HTTPResponseWithInvalidJSON() async throws {
         let invalidJSON = Data("invalid data".utf8)
-        let (sut, _) = makeSUT(result: .success((invalidJSON, anyValidResponse())))
+        let (sut, _) = makeSUT(result: .success((invalidJSON, anyValidHTTPResponse())))
         
         await expect(sut, toThrowError: .invalidData)
     }
 
     func test_load_deliversNoItemsOn200HTTPResponseWithEmptyJSONList() async throws {
-        let (sut, _) = makeSUT(result: .success((emptyItemsJSON(), anyValidResponse())))
+        let (sut, _) = makeSUT(result: .success(anyValidResponse()))
         
         await expect(sut, toSucceedWith: [])
     }
@@ -95,7 +95,7 @@ final class APIRepositoriesLoaderTests: XCTestCase {
         }
         """.data(using: .utf8)!
         
-        let (sut, _) = makeSUT(result: .success((itemsJSON, anyValidResponse())))
+        let (sut, _) = makeSUT(result: .success((itemsJSON, anyValidHTTPResponse())))
 
         await expect(sut, toSucceedWith: [item1, item2])
     }
@@ -137,14 +137,14 @@ final class APIRepositoriesLoaderTests: XCTestCase {
     }
     
     private func anyValidResponse() -> (Data, HTTPURLResponse) {
-        (emptyItemsJSON(), anyValidResponse())
+        (emptyItemsJSON(), anyValidHTTPResponse())
     }
     
     private func emptyItemsJSON() -> Data {
         Data("{\"items\": []}".utf8)
     }
     
-    private func anyValidResponse() -> HTTPURLResponse {
+    private func anyValidHTTPResponse() -> HTTPURLResponse {
         httpResponse(code: 200)
     }
     
@@ -158,7 +158,7 @@ final class APIRepositoriesLoaderTests: XCTestCase {
     }
 }
 
-class HTTPClientSpy: HTTPClient {
+private class HTTPClientSpy: HTTPClient {
     private(set) var requestedURLs = [URL]()
     
     let result: Result<(Data, HTTPURLResponse), Error>
