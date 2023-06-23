@@ -7,11 +7,6 @@
 
 import Foundation
 
-public enum LoadRepositoriesResult {
-    case success([RepositoryItem])
-    case failure(Error)
-}
-
 protocol RepositoriesLoader {
     func load() async throws -> [RepositoryItem]
 }

@@ -15,9 +15,7 @@ public class APIRepositoriesLoader: RepositoriesLoader {
         case connectivity
         case invalidData
     }
-    
-    public typealias Result = LoadRepositoriesResult
-    
+        
     public init(client: HTTPClient, url: URL) {
         self.client = client
         self.url = url

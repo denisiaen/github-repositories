@@ -8,21 +8,6 @@
 import XCTest
 import GithubRepository
 
-class HTTPClientSpy: HTTPClient {
-    private(set) var requestedURLs = [URL]()
-    
-    let result: Result<(Data, HTTPURLResponse), Error>
-    
-    init(result: Result<(Data, HTTPURLResponse), Error>) {
-        self.result = result
-    }
-    
-    func get(from url: URL) async throws -> (Data, HTTPURLResponse) {
-        requestedURLs.append(url)
-        return try result.get()
-    }
-}
-
 final class APIRepositoriesLoaderTests: XCTestCase {
 
     func test_init_doesNotRequestDataFromURL() {
@@ -151,10 +136,6 @@ final class APIRepositoriesLoaderTests: XCTestCase {
         }
     }
     
-    private func failure(_ error: APIRepositoriesLoader.Error) -> APIRepositoriesLoader.Result {
-        return .failure(error)
-    }
-    
     private func anyValidResponse() -> (Data, HTTPURLResponse) {
         (emptyItemsJSON(), anyValidResponse())
     }
@@ -174,5 +155,20 @@ final class APIRepositoriesLoaderTests: XCTestCase {
     private struct AnyError: Error {}
     private func anyError() -> Error {
         AnyError()
+    }
+}
+
+class HTTPClientSpy: HTTPClient {
+    private(set) var requestedURLs = [URL]()
+    
+    let result: Result<(Data, HTTPURLResponse), Error>
+    
+    init(result: Result<(Data, HTTPURLResponse), Error>) {
+        self.result = result
+    }
+    
+    func get(from url: URL) async throws -> (Data, HTTPURLResponse) {
+        requestedURLs.append(url)
+        return try result.get()
     }
 }
