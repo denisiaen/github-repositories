@@ -7,6 +7,8 @@
 
 import Foundation
 
+public typealias HTTPResponse = (Data, HTTPURLResponse)
+
 public protocol HTTPClient {
-    func get(from url: URL) async throws -> (Data, HTTPURLResponse)
+    func get(from url: URL) async throws -> HTTPResponse
 }
