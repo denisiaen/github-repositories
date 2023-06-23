@@ -77,33 +77,17 @@ final class URLSessionHTTPClientTests: XCTestCase {
         return (sut, sessionStub)
     }
     
-    private func anyURL() -> URL {
-        URL(string: "http://any-url.com")!
-    }
-    
-    func anyNSError() -> NSError {
-        NSError(domain: "any error", code: 0)
-    }
-    
     private func nonHTTPURLResponse() -> URLResponse {
         URLResponse(url: anyURL(), mimeType: nil, expectedContentLength: 0, textEncodingName: nil)
+    }
+    
+    private func anyData() -> Data {
+        Data("any data".utf8)
     }
 }
 
 private func anyValidResponse() -> (Data, HTTPURLResponse) {
     (Data(), anyValidHTTPResponse())
-}
-
-private func anyData() -> Data {
-    Data("any data".utf8)
-}
-
-private func anyValidHTTPResponse() -> HTTPURLResponse {
-    httpResponse(code: 200)
-}
-
-private func httpResponse(code: Int) -> HTTPURLResponse {
-    HTTPURLResponse(url: URL(string: "http://any-url.com")!, statusCode: code, httpVersion: nil, headerFields: nil)!
 }
 
 private class URLSessionProtocolStub: URLSessionProtocol {

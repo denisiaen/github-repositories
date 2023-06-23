@@ -36,7 +36,7 @@ final class APIRepositoriesLoaderTests: XCTestCase {
     }
     
     func test_load_deliversErrorOnClientError() async throws {
-        let (sut, _) = makeSUT(result: .failure(anyError()))
+        let (sut, _) = makeSUT(result: .failure(anyNSError()))
         
         await expect(sut, toThrowError: .connectivity)
     }
@@ -134,19 +134,6 @@ final class APIRepositoriesLoaderTests: XCTestCase {
     
     private func emptyItemsJSON() -> Data {
         Data("{\"items\": []}".utf8)
-    }
-    
-    private func anyValidHTTPResponse() -> HTTPURLResponse {
-        httpResponse(code: 200)
-    }
-    
-    private func httpResponse(code: Int) -> HTTPURLResponse {
-        HTTPURLResponse(url: URL(string: "http://any-url.com")!, statusCode: code, httpVersion: nil, headerFields: nil)!
-    }
-    
-    private struct AnyError: Error {}
-    private func anyError() -> Error {
-        AnyError()
     }
 }
 
