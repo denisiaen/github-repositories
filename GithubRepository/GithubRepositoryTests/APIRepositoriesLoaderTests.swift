@@ -110,29 +110,21 @@ final class APIRepositoriesLoaderTests: XCTestCase {
         return (sut, client)
     }
     
-    private func trackForMemoryLeaks(_ instance: AnyObject, file: StaticString = #filePath, line: UInt = #line) {
-        // when every test finishes running, then this block is invoked
-        addTeardownBlock { [weak instance] in
-            // make sure instance is gonna be nil after each test runs
-            XCTAssertNil(instance, "Instance should have been deallocated. Potential memory leak.", file: file, line: line)
-        }
-    }
-    
-    private func expect(_ sut: APIRepositoriesLoader, toSucceedWith expectedItems: [RepositoryItem]) async {
+    private func expect(_ sut: APIRepositoriesLoader, toSucceedWith expectedItems: [RepositoryItem], file: StaticString = #filePath, line: UInt = #line) async {
         do {
             let response = try await sut.load()
-            XCTAssertEqual(response, expectedItems)
+            XCTAssertEqual(response, expectedItems, file: file, line: line)
         } catch {
-            XCTFail("Expected success, got error: \(error)")
+            XCTFail("Expected success, got error: \(error)", file: file, line: line)
         }
     }
     
-    private func expect(_ sut: APIRepositoriesLoader, toThrowError expectedError: APIRepositoriesLoader.Error) async {
+    private func expect(_ sut: APIRepositoriesLoader, toThrowError expectedError: APIRepositoriesLoader.Error, file: StaticString = #filePath, line: UInt = #line) async {
         do {
             _ = try await sut.load()
-            XCTFail("Expected error: \(expectedError)")
+            XCTFail("Expected error: \(expectedError)", file: file, line: line)
         } catch {
-            XCTAssertEqual(error as? APIRepositoriesLoader.Error, expectedError)
+            XCTAssertEqual(error as? APIRepositoriesLoader.Error, expectedError, file: file, line: line)
         }
     }
     
