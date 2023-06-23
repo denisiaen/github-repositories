@@ -19,6 +19,7 @@
 		AF4062522A4497CE0015C9E0 /* APIRepositoriesLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF4062512A4497CE0015C9E0 /* APIRepositoriesLoader.swift */; };
 		AF8ABFCB2A44B92B006F5BD2 /* RepositoriesMapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF8ABFCA2A44B92B006F5BD2 /* RepositoriesMapper.swift */; };
 		AFB1E2DF2A45C06D00056D3E /* HTTPClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFB1E2DE2A45C06D00056D3E /* HTTPClient.swift */; };
+		AFB1E2E12A45C2B700056D3E /* URLSessionHTTPClientTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFB1E2E02A45C2B700056D3E /* URLSessionHTTPClientTests.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -46,6 +47,7 @@
 		AF4062512A4497CE0015C9E0 /* APIRepositoriesLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIRepositoriesLoader.swift; sourceTree = "<group>"; };
 		AF8ABFCA2A44B92B006F5BD2 /* RepositoriesMapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RepositoriesMapper.swift; sourceTree = "<group>"; };
 		AFB1E2DE2A45C06D00056D3E /* HTTPClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HTTPClient.swift; sourceTree = "<group>"; };
+		AFB1E2E02A45C2B700056D3E /* URLSessionHTTPClientTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URLSessionHTTPClientTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -110,6 +112,7 @@
 			isa = PBXGroup;
 			children = (
 				AF11F6372A4490C5006B13DC /* APIRepositoriesLoaderTests.swift */,
+				AFB1E2E02A45C2B700056D3E /* URLSessionHTTPClientTests.swift */,
 			);
 			path = GithubRepositoryTests;
 			sourceTree = "<group>";
@@ -244,6 +247,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				AF11F6382A4490C5006B13DC /* APIRepositoriesLoaderTests.swift in Sources */,
+				AFB1E2E12A45C2B700056D3E /* URLSessionHTTPClientTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
