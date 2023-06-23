@@ -124,15 +124,55 @@
 		AF11F6342A448F66006B13DC /* Repositories Feature */ = {
 			isa = PBXGroup;
 			children = (
-				AF4062512A4497CE0015C9E0 /* APIRepositoriesLoader.swift */,
-				AFB1E2DE2A45C06D00056D3E /* HTTPClient.swift */,
-				AF3AB13D2A45DF2500CD531C /* URLSessionProtocol.swift */,
-				AF8ABFCA2A44B92B006F5BD2 /* RepositoriesMapper.swift */,
-				AF3AB13F2A45DF4800CD531C /* URLSessionHTTPClient.swift */,
-				AF11F6302A448913006B13DC /* RepositoryItem.swift */,
-				AF11F6322A448BCA006B13DC /* RepositoriesLoader.swift */,
+				AF3AB1422A45E00C00CD531C /* Domain */,
+				AF3AB1432A45E03A00CD531C /* Infrastructure */,
 			);
 			path = "Repositories Feature";
+			sourceTree = "<group>";
+		};
+		AF3AB1412A45DFC500CD531C /* HTTPClient */ = {
+			isa = PBXGroup;
+			children = (
+				AF3AB13D2A45DF2500CD531C /* URLSessionProtocol.swift */,
+				AFB1E2DE2A45C06D00056D3E /* HTTPClient.swift */,
+			);
+			path = HTTPClient;
+			sourceTree = "<group>";
+		};
+		AF3AB1422A45E00C00CD531C /* Domain */ = {
+			isa = PBXGroup;
+			children = (
+				AF3AB1442A45E0A000CD531C /* Models */,
+				AF3AB1452A45E0AA00CD531C /* UseCases */,
+			);
+			path = Domain;
+			sourceTree = "<group>";
+		};
+		AF3AB1432A45E03A00CD531C /* Infrastructure */ = {
+			isa = PBXGroup;
+			children = (
+				AF3AB13F2A45DF4800CD531C /* URLSessionHTTPClient.swift */,
+				AF4062512A4497CE0015C9E0 /* APIRepositoriesLoader.swift */,
+				AF8ABFCA2A44B92B006F5BD2 /* RepositoriesMapper.swift */,
+			);
+			path = Infrastructure;
+			sourceTree = "<group>";
+		};
+		AF3AB1442A45E0A000CD531C /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				AF11F6302A448913006B13DC /* RepositoryItem.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		AF3AB1452A45E0AA00CD531C /* UseCases */ = {
+			isa = PBXGroup;
+			children = (
+				AF3AB1412A45DFC500CD531C /* HTTPClient */,
+				AF11F6322A448BCA006B13DC /* RepositoriesLoader.swift */,
+			);
+			path = UseCases;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
