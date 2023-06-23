@@ -7,6 +7,6 @@
 
 import Foundation
 
-protocol RepositoriesLoader {
+public protocol RepositoriesLoader {
     func load() async throws -> [RepositoryItem]
 }
