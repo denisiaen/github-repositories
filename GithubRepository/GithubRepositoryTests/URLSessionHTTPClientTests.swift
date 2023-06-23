@@ -28,8 +28,12 @@ class URLSessionHTTPClient: HTTPClient {
     func get(from url: URL) async throws -> HTTPResponse {
         let urlRequest = URLRequest(url: url)
         let (data, urlResponse) = try await session.data(for: urlRequest)
-               
-        return (data, urlResponse as! HTTPURLResponse)
+        
+        guard let httpUrlResponse = urlResponse as? HTTPURLResponse else {
+            throw UnsupportedURLResponseError()
+        }
+        
+        return (data, httpUrlResponse)
     }
 }
 
@@ -66,6 +70,19 @@ final class URLSessionHTTPClientTests: XCTestCase {
             XCTAssertEqual((error as NSError?)?.code, requestError.code)
         }
     }
+    
+    func test_getFromURL_failsOnNonHTTPURLResponse() async throws {
+        let url = anyURL()
+        let invalidResponse = (Data(), nonHTTPURLResponse())
+        let (sut, _) = makeSUT(result: .success(invalidResponse))
+        
+        do {
+            _ = try await sut.get(from: url)
+            XCTFail("Expected to throw error")
+        } catch {
+            XCTAssertTrue(error is UnsupportedURLResponseError)
+        }
+    }
 
     // MARK: - Helpers
     
@@ -84,6 +101,10 @@ final class URLSessionHTTPClientTests: XCTestCase {
     
     func anyNSError() -> NSError {
         NSError(domain: "any error", code: 0)
+    }
+    
+    private func nonHTTPURLResponse() -> URLResponse {
+        URLResponse(url: anyURL(), mimeType: nil, expectedContentLength: 0, textEncodingName: nil)
     }
 }
 
