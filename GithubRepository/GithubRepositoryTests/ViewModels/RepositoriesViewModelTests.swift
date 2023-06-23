@@ -8,6 +8,8 @@
 import XCTest
 import GithubRepository
 
+import Combine
+
 public class RepositoriesViewModel: ObservableObject {
     
     private let repositoriesLoader: RepositoriesLoader
@@ -22,6 +24,12 @@ public class RepositoriesViewModel: ObservableObject {
     
     @MainActor
     public func viewDidAppear() async {
+        isLoading = true
+
+        defer {
+            isLoading = false
+        }
+        
         do {
             repositoryItems = try await repositoriesLoader.load()
         } catch {
@@ -31,7 +39,8 @@ public class RepositoriesViewModel: ObservableObject {
 }
 
 final class RepositoriesViewModelTests: XCTestCase {
-    
+    private var cancellable = Set<AnyCancellable>()
+
     func test_init_deliversEmptyList() {
         let (sut, _) = makeSUT()
         
@@ -67,6 +76,34 @@ final class RepositoriesViewModelTests: XCTestCase {
         XCTAssertEqual(sut.repositoryItems, [item1, item2])
     }
     
+    func test_viewDidAppear_startsAndStopsLoadingOnRepositoriesLoadError() async {
+        let (sut, _) = makeSUT(repositoriesLoaderResult: .failure(anyNSError()))
+        
+        let exp = expectation(description: "Wait for collecting isLoading values")
+        sut.$isLoading.dropFirst().collect(2).sink { values in
+            XCTAssertEqual(values, [true, false])
+            exp.fulfill()
+        }.store(in: &cancellable)
+        
+        await sut.viewDidAppear()
+
+        await fulfillment(of: [exp], timeout: 1.0)
+    }
+    
+    func test_viewDidAppear_startsAndStopsLoadingOnRepositoriesLoadSuccess() async {
+        let (sut, _) = makeSUT(repositoriesLoaderResult: .success([anyRepositoryItem()]))
+        
+        let exp = expectation(description: "Wait for collecting isLoading values")
+        sut.$isLoading.dropFirst().collect(2).sink { values in
+            XCTAssertEqual(values, [true, false])
+            exp.fulfill()
+        }.store(in: &cancellable)
+        
+        await sut.viewDidAppear()
+
+        await fulfillment(of: [exp], timeout: 1.0)
+    }
+    
     // MARK: - Helpers
     
     private func makeSUT(
@@ -75,6 +112,7 @@ final class RepositoriesViewModelTests: XCTestCase {
         let repositoriesLoaderStub = RepositoriesLoaderStub(result: repositoriesLoaderResult)
         let sut = RepositoriesViewModel(repositoriesLoader: repositoriesLoaderStub)
         trackForMemoryLeaks(sut, file: file, line: line)
+        trackForMemoryLeaks(repositoriesLoaderStub, file: file, line: line)
         return (sut, repositoriesLoaderStub)
     }
 }
