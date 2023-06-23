@@ -37,12 +37,22 @@ public struct UnsupportedURLResponseError: Error {}
 
 final class URLSessionHTTPClientTests: XCTestCase {
     
+    func test_init_doesNotPerformGETRequest() {
+        let (_, session) = makeSUT()
+        
+        XCTAssertTrue(session.requests.isEmpty)
+    }
+    
     func test_getFromURL_performsGETRequestWithURL() async throws {
-        let (sut, session) = makeSUT()
+        let url = anyURL()
+        let anyValidResponse = (Data(), HTTPURLResponse())
+        let (sut, session) = makeSUT(result: .success(anyValidResponse))
         
-        _ = try await sut.get(from: anyURL())
+        _ = try await sut.get(from: url)
         
-        XCTAssertNotNil(session.request)
+        XCTAssertEqual(session.requests.count, 1)
+        XCTAssertEqual(session.requests.first?.url, url)
+        XCTAssertEqual(session.requests.first?.httpMethod, "GET")
     }
     
 
