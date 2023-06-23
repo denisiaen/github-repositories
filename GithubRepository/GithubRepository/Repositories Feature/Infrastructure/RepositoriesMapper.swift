@@ -25,7 +25,7 @@ public final class RepositoriesMapper {
                 case stars = "stargazers_count"
             }
             
-            private let id: UUID
+            private let id: Int
             private let owner: Owner
             private let repositoryName: String
             private let description: String?

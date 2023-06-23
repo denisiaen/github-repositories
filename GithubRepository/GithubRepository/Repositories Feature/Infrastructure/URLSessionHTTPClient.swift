@@ -15,7 +15,7 @@ public class URLSessionHTTPClient: HTTPClient {
     }
     
     public func get(from url: URL) async throws -> HTTPResponse {
-        let urlRequest = URLRequest(url: url)
+        let urlRequest = URLRequest(url: url, cachePolicy: .returnCacheDataElseLoad)
         
         let (data, urlResponse) = try await session.data(for: urlRequest)
         

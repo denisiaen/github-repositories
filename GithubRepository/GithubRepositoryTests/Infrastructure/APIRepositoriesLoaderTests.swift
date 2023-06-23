@@ -65,15 +65,15 @@ final class APIRepositoriesLoaderTests: XCTestCase {
     }
     
     func test_load_deliversItemsOn200HTTPResponseWithJSONItems() async throws {
-        let item1 = RepositoryItem(id: UUID(), userName: "A Name", imageURL: URL(string: "http://a-url.com")!, repositoryName: "Repo Name", description: nil, language: nil, stars: nil)
+        let item1 = RepositoryItem(id: 1, userName: "A Name", imageURL: URL(string: "http://a-url.com")!, repositoryName: "Repo Name", description: nil, language: nil, stars: nil)
 
-        let item2 = RepositoryItem(id: UUID(), userName: "A Name", imageURL: URL(string: "http://a-url.com")!, repositoryName: "Repo Name", description: "description", language: "language", stars: 3)
+        let item2 = RepositoryItem(id: 2, userName: "A Name", imageURL: URL(string: "http://a-url.com")!, repositoryName: "Repo Name", description: "description", language: "language", stars: 3)
 
         let itemsJSON = """
         {
             "items": [
                 {
-                    "id": "\(item1.id.uuidString)",
+                    "id": \(item1.id),
                     "name": "\(item1.repositoryName)",
                     "owner": {
                         "login": "\(item1.userName)",
@@ -81,7 +81,7 @@ final class APIRepositoriesLoaderTests: XCTestCase {
                     }
                 },
                 {
-                    "id": "\(item2.id.uuidString)",
+                    "id": \(item2.id),
                     "name": "\(item2.repositoryName)",
                     "description": "\(item2.description ?? "")",
                     "language": "\(item2.language ?? "")",

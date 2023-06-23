@@ -37,8 +37,8 @@ final class RepositoriesViewModelTests: XCTestCase {
     }
     
     func test_viewDidAppear_deliversResultOnRepositoriesLoadSuccess() async {
-        let item1 = RepositoryItem(id: UUID(), userName: "A name", imageURL: URL(string: "http://url")!, repositoryName: "A repo", description: nil, language: nil, stars: nil)
-        let item2 = RepositoryItem(id: UUID(), userName: "Another name", imageURL: URL(string: "http://another-url")!, repositoryName: "Another repo", description: "A description", language: "A language", stars: 2)
+        let item1 = RepositoryItem(id: 1, userName: "A name", imageURL: URL(string: "http://url")!, repositoryName: "A repo", description: nil, language: nil, stars: nil)
+        let item2 = RepositoryItem(id: 2, userName: "Another name", imageURL: URL(string: "http://another-url")!, repositoryName: "Another repo", description: "A description", language: "A language", stars: 2)
         
         let (sut, _) = makeSUT(repositoriesLoaderResult: .success([item1, item2]))
         
@@ -89,7 +89,7 @@ final class RepositoriesViewModelTests: XCTestCase {
 }
 
 private func anyRepositoryItem() -> RepositoryItem {
-    RepositoryItem(id: UUID(), userName: "A name", imageURL: URL(string: "http://url")!, repositoryName: "A repo", description: nil, language: nil, stars: nil)
+    RepositoryItem(id: 1, userName: "A name", imageURL: URL(string: "http://url")!, repositoryName: "A repo", description: nil, language: nil, stars: nil)
 }
 
 private class RepositoriesLoaderStub: RepositoriesLoader {

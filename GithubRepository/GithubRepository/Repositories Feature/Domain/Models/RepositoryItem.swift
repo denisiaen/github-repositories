@@ -8,7 +8,7 @@
 import Foundation
 
 public struct RepositoryItem: Equatable {
-    public let id: UUID
+    public let id: Int
     public let userName: String
     public let imageURL: URL
     public let repositoryName: String
@@ -16,7 +16,7 @@ public struct RepositoryItem: Equatable {
     public let language: String?
     public let stars: Int?
     
-    public init(id: UUID, userName: String, imageURL: URL, repositoryName: String, description: String?, language: String?, stars: Int?) {
+    public init(id: Int, userName: String, imageURL: URL, repositoryName: String, description: String?, language: String?, stars: Int?) {
         self.id = id
         self.userName = userName
         self.imageURL = imageURL
