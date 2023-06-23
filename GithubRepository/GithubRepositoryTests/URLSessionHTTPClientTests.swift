@@ -45,8 +45,7 @@ final class URLSessionHTTPClientTests: XCTestCase {
     
     func test_getFromURL_performsGETRequestWithURL() async throws {
         let url = anyURL()
-        let anyValidResponse = (Data(), HTTPURLResponse())
-        let (sut, session) = makeSUT(result: .success(anyValidResponse))
+        let (sut, session) = makeSUT(result: .success(anyValidResponse()))
         
         _ = try await sut.get(from: url)
         
@@ -55,6 +54,18 @@ final class URLSessionHTTPClientTests: XCTestCase {
         XCTAssertEqual(session.requests.first?.httpMethod, "GET")
     }
     
+    func test_getFromURL_failsOnRequestError() async throws {
+        let requestError = anyNSError()
+        let (sut, _) = makeSUT(result: .failure(requestError))
+        
+        do {
+            _ = try await sut.get(from: anyURL())
+            XCTFail("Expected error \(requestError)")
+        } catch {
+            XCTAssertEqual((error as NSError?)?.domain, requestError.domain)
+            XCTAssertEqual((error as NSError?)?.code, requestError.code)
+        }
+    }
 
     // MARK: - Helpers
     
@@ -69,6 +80,10 @@ final class URLSessionHTTPClientTests: XCTestCase {
     
     private func anyURL() -> URL {
         URL(string: "http://any-url.com")!
+    }
+    
+    func anyNSError() -> NSError {
+        NSError(domain: "any error", code: 0)
     }
 }
 
