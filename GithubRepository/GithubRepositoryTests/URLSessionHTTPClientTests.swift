@@ -59,7 +59,7 @@ final class URLSessionHTTPClientTests: XCTestCase {
     // MARK: - Helpers
     
     private func makeSUT(
-        result: Result<(Data, URLResponse), Error> = .success((Data(), HTTPURLResponse()))
+        result: Result<(Data, URLResponse), Error> = .success(anyValidResponse())
     ) -> (sut: URLSessionHTTPClient, session: URLSessionProtocolStub) {
         let sessionStub = URLSessionProtocolStub(result: result)
         let sut = URLSessionHTTPClient(session: sessionStub)
@@ -70,30 +70,30 @@ final class URLSessionHTTPClientTests: XCTestCase {
     private func anyURL() -> URL {
         URL(string: "http://any-url.com")!
     }
-    
-    private func anyValidResponse() -> (Data, HTTPURLResponse) {
-        (Data(), anyValidResponse())
-    }
-    
-    private func anyValidResponse() -> HTTPURLResponse {
-        httpResponse(code: 200)
-    }
-    
-    private func httpResponse(code: Int) -> HTTPURLResponse {
-        HTTPURLResponse(url: URL(string: "http://any-url.com")!, statusCode: code, httpVersion: nil, headerFields: nil)!
-    }
+}
+
+private func anyValidResponse() -> (Data, HTTPURLResponse) {
+    (Data(), anyValidResponse())
+}
+
+private func anyValidResponse() -> HTTPURLResponse {
+    httpResponse(code: 200)
+}
+
+private func httpResponse(code: Int) -> HTTPURLResponse {
+    HTTPURLResponse(url: URL(string: "http://any-url.com")!, statusCode: code, httpVersion: nil, headerFields: nil)!
 }
 
 private class URLSessionProtocolStub: URLSessionProtocol {
     private let result: Result<(Data, URLResponse), Error>
-    var request: URLRequest?
+    private(set) var requests = [URLRequest]()
     
     init(result: Result<(Data, URLResponse), Error>) {
         self.result = result
     }
     
     func data(for request: URLRequest) async throws -> (Data, URLResponse) {
-        self.request = request
+        requests.append(request)
         return try result.get()
     }
 }
