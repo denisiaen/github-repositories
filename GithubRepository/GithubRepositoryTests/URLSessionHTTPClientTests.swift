@@ -8,38 +8,6 @@
 import XCTest
 import GithubRepository
 
-public protocol URLSessionProtocol {
-    func data(for request: URLRequest) async throws -> (Data, URLResponse)
-}
-
-extension URLSession: URLSessionProtocol {
-    public func data(for request: URLRequest, delegate: URLSessionTaskDelegate?) async throws -> (Data, URLResponse) {
-        try await data(for: request)
-    }
-}
-
-class URLSessionHTTPClient: HTTPClient {
-    private let session: URLSessionProtocol
-        
-    init(session: URLSessionProtocol = URLSession.shared) {
-        self.session = session
-    }
-    
-    func get(from url: URL) async throws -> HTTPResponse {
-        let urlRequest = URLRequest(url: url)
-        
-        let (data, urlResponse) = try await session.data(for: urlRequest)
-        
-        guard let httpUrlResponse = urlResponse as? HTTPURLResponse else {
-            throw UnsupportedURLResponseError()
-        }
-        
-        return (data, httpUrlResponse)
-    }
-}
-
-public struct UnsupportedURLResponseError: Error {}
-
 final class URLSessionHTTPClientTests: XCTestCase {
     
     func test_init_doesNotPerformGETRequest() {
