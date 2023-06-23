@@ -23,7 +23,7 @@ public class RepositoriesViewModel: ObservableObject {
     @MainActor
     public func viewDidAppear() async {
         do {
-            _ = try await repositoriesLoader.load()
+            repositoryItems = try await repositoriesLoader.load()
         } catch {
             self.error = error
         }
@@ -54,6 +54,17 @@ final class RepositoriesViewModelTests: XCTestCase {
         await sut.viewDidAppear()
         
         XCTAssertNotNil(sut.error)
+    }
+    
+    func test_viewDidAppear_deliversResultOnRepositoriesLoadSuccess() async {
+        let item1 = RepositoryItem(id: UUID(), userName: "A name", imageURL: URL(string: "http://url")!, repositoryName: "A repo", description: nil, language: nil, stars: nil)
+        let item2 = RepositoryItem(id: UUID(), userName: "Another name", imageURL: URL(string: "http://another-url")!, repositoryName: "Another repo", description: "A description", language: "A language", stars: 2)
+        
+        let (sut, _) = makeSUT(repositoriesLoaderResult: .success([item1, item2]))
+        
+        await sut.viewDidAppear()
+        
+        XCTAssertEqual(sut.repositoryItems, [item1, item2])
     }
     
     // MARK: - Helpers
