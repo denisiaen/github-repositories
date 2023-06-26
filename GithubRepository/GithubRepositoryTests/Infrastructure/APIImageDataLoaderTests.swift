@@ -28,7 +28,6 @@ class APIImageDataLoader {
     }
     
     func load() async throws -> Data {
-        
         guard let (data, response) = try? await client.get(from: url) else {
             throw Error.failed
         }
@@ -77,13 +76,13 @@ final class APIImageDataLoaderTests: XCTestCase {
         XCTAssertEqual(client.requestedURLs, [url, url])
     }
     
-    func test_load_throwsErrorOnClientError() async throws {
+    func test_load_throwsErrorOnClientError() async {
         let (sut, _) = makeSUT(result: .failure(anyNSError()))
                 
         await expect(sut, toThrowError: .failed)
     }
     
-    func test_load_throwsErrorOnNon200HTTPResponse() async throws {
+    func test_load_throwsErrorOnNon200HTTPResponse() async {
         let samples = [199, 201, 300, 400, 500]
         
         for code in samples {
@@ -99,6 +98,13 @@ final class APIImageDataLoaderTests: XCTestCase {
         await expect(sut, toThrowError: .invalidData)
     }
     
+    func test_load_deliversReceivedNonEmptyDataOn200HTTPResponse() async {
+        let nonEmptyData = Data("non-empty data".utf8)
+        let (sut, _) = makeSUT(result: .success((nonEmptyData, anyValidHTTPResponse())))
+        
+        await expect(sut, toSucceedWith: nonEmptyData)
+    }
+    
     // MARK: - Helpers
     
     private func makeSUT(url: URL = URL(string: "https://a-url")!, result: Result<(Data, HTTPURLResponse), Error> = .success((anyData(), HTTPURLResponse())), file: StaticString = #filePath, line: UInt = #line) -> (sut: APIImageDataLoader, client: HTTPClientSpy) {
@@ -107,6 +113,15 @@ final class APIImageDataLoaderTests: XCTestCase {
         trackForMemoryLeaks(sut, file: file, line: line)
         trackForMemoryLeaks(client, file: file, line: line)
         return (sut, client)
+    }
+    
+    private func expect(_ sut: APIImageDataLoader, toSucceedWith data: Data, file: StaticString = #filePath, line: UInt = #line) async {
+        do {
+            let result = try await sut.load()
+            XCTAssertEqual(result, data, file: file, line: line)
+        } catch {
+            XCTFail("Expected success, got error: \(error)", file: file, line: line)
+        }
     }
     
     private func expect(_ sut: APIImageDataLoader, toThrowError expectedError: APIImageDataLoader.Error, file: StaticString = #filePath, line: UInt = #line) async {
