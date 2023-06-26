@@ -53,11 +53,19 @@ public final class RepositoriesMapper {
     private init() {}
     
     static func map(_ data: Data, _ response: HTTPURLResponse) throws -> [RepositoryItem] {
-        guard response.statusCode == OK_200,
+        guard response.isOK,
               let root = try? JSONDecoder().decode(Root.self, from: data) else {
             throw APIRepositoriesLoader.Error.invalidData
         }
         
         return root.repositories
+    }
+}
+
+public extension HTTPURLResponse {
+    private static var OK_200: Int { return 200 }
+    
+    var isOK: Bool {
+        return statusCode == HTTPURLResponse.OK_200
     }
 }

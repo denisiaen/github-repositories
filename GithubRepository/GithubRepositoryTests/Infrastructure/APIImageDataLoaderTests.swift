@@ -27,7 +27,10 @@ class APIImageDataLoader {
     
     func load() async throws -> Data {
         do {
-            let _ = try await client.get(from: url)
+            let (_, response) = try await client.get(from: url)
+            guard response.isOK else {
+                throw ImageLoadError()
+            }
             return Data()
         } catch {
             throw ImageLoadError()
@@ -66,6 +69,16 @@ final class APIImageDataLoaderTests: XCTestCase {
         let (sut, _) = makeSUT(result: .failure(anyNSError()))
                 
         await expect(sut, toThrowError: ImageLoadError.self)
+    }
+    
+    func test_load_deliversErrorOnNon200HTTPResponse() async throws {
+        let samples = [199, 201, 300, 400, 500]
+        
+        for code in samples {
+            let non200Response = (Data(), httpResponse(code: code))
+            let (sut, _) = makeSUT(result: .success(non200Response))
+            await expect(sut, toThrowError: ImageLoadError.self)
+        }
     }
     
     // MARK: - Helpers
