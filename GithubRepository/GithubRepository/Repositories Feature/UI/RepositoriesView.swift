@@ -16,18 +16,31 @@ struct RepositoriesView: View {
     }
     
     var body: some View {
-        VStack {
-            Image(systemName: "globe")
-                .imageScale(.large)
-                .foregroundColor(.accentColor)
-            Text("Hello, world!")
+        ScrollView(showsIndicators: false) {
+            ForEach(viewModel.repositoryItems.indices, id: \.self) { index in
+                let item = viewModel.repositoryItems[index]
+                HStack {
+                    CircularAsyncImage(url: item.imageURL, placeholder: placeholder)
+                        .frame(width: 20, height: 20)
+                    Text(item.userName)
+                        .foregroundColor(.black)
+                    Spacer()
+                }
+                Divider()
+            }
         }
-        .padding()
+        .padding(.leading)
         .onAppear {
             Task {
                 await viewModel.viewDidAppear()
             }
         }
+    }
+    
+    private var placeholder: some View {
+        Circle()
+            .fill(Color.gray)
+            .frame(width: 20, height: 20)
     }
 }
 
@@ -43,6 +56,8 @@ private extension RepositoriesViewModel {
     }
     
     private class DummyRepositoryLoader: RepositoriesLoader {
-        func load() async throws -> [RepositoryItem] { [] }
+        func load() async throws -> [RepositoryItem] {
+            [RepositoryItem(id: 1, userName: "A user", imageURL: URL(string: "https://avatars.githubusercontent.com/u/4314092?v=4")!, repositoryName: "A repo", description: nil, language: nil, stars: 222) ]
+        }
     }
 }
