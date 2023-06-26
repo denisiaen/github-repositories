@@ -27,6 +27,7 @@
 		AFB1E2E12A45C2B700056D3E /* URLSessionHTTPClientTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFB1E2E02A45C2B700056D3E /* URLSessionHTTPClientTests.swift */; };
 		AFB54C6C2A49904A00C2B784 /* CircularAsyncImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFB54C6B2A49904A00C2B784 /* CircularAsyncImage.swift */; };
 		AFB54C6E2A49909900C2B784 /* AsyncImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFB54C6D2A49909900C2B784 /* AsyncImageView.swift */; };
+		AFB54C702A49B2C000C2B784 /* APIImageDataLoaderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFB54C6F2A49B2C000C2B784 /* APIImageDataLoaderTests.swift */; };
 		AFD774452A45F8A100A94454 /* RepositoriesViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFD774442A45F8A100A94454 /* RepositoriesViewModel.swift */; };
 /* End PBXBuildFile section */
 
@@ -63,6 +64,7 @@
 		AFB1E2E02A45C2B700056D3E /* URLSessionHTTPClientTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URLSessionHTTPClientTests.swift; sourceTree = "<group>"; };
 		AFB54C6B2A49904A00C2B784 /* CircularAsyncImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CircularAsyncImage.swift; sourceTree = "<group>"; };
 		AFB54C6D2A49909900C2B784 /* AsyncImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AsyncImageView.swift; sourceTree = "<group>"; };
+		AFB54C6F2A49B2C000C2B784 /* APIImageDataLoaderTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIImageDataLoaderTests.swift; sourceTree = "<group>"; };
 		AFD774442A45F8A100A94454 /* RepositoriesViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RepositoriesViewModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -218,6 +220,7 @@
 			isa = PBXGroup;
 			children = (
 				AF11F6372A4490C5006B13DC /* APIRepositoriesLoaderTests.swift */,
+				AFB54C6F2A49B2C000C2B784 /* APIImageDataLoaderTests.swift */,
 				AFB1E2E02A45C2B700056D3E /* URLSessionHTTPClientTests.swift */,
 			);
 			path = Infrastructure;
@@ -364,6 +367,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				AF11F6382A4490C5006B13DC /* APIRepositoriesLoaderTests.swift in Sources */,
+				AFB54C702A49B2C000C2B784 /* APIImageDataLoaderTests.swift in Sources */,
 				AFB1E2E12A45C2B700056D3E /* URLSessionHTTPClientTests.swift in Sources */,
 				AF3AB14E2A45E43D00CD531C /* RepositoriesViewModelTests.swift in Sources */,
 				AF3AB1482A45E19900CD531C /* XCTestCase+MemoryLeakTracking.swift in Sources */,
