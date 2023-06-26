@@ -21,10 +21,10 @@ struct RepositoriesView: View {
             ForEach(viewModel.repositoryItems.indices, id: \.self) { index in
                 let item = viewModel.repositoryItems[index]
                 makeItemView(item: item)
+                    .padding()
                 Divider()
             }
         }
-        .padding(.leading)
         .onAppear {
             Task {
                 await viewModel.viewDidAppear()
@@ -39,21 +39,20 @@ struct RepositoriesView: View {
     }
     
     @ViewBuilder
-    func makeItemView(item: RepositoryItem) -> some View {
+    private func makeItemView(item: RepositoryItem) -> some View {
         let size: CGFloat = 40
-        HStack {
+        HStack(alignment: .top) {
             makeAvailableAsyncImage(item.imageURL)
                 .frame(width: size, height: size)
                 .cornerRadius(size / 2)
-            Text(item.userName)
-                .foregroundColor(.black)
+                .padding(.trailing, 10)
+            makeTextItemView(item)
             Spacer()
         }
-        
     }
     
     @ViewBuilder
-    func makeAvailableAsyncImage(_ url: URL) -> some View {
+    private func makeAvailableAsyncImage(_ url: URL) -> some View {
         if #available(iOS 15.0, *) {
             makeAsyncImage(url)
         } else {
@@ -61,8 +60,31 @@ struct RepositoriesView: View {
         }
     }
     
+    private func makeTextItemView(_ item: RepositoryItem) -> some View {
+        VStack(alignment: .leading, spacing: 10) {
+            makeRegularTextView(item.userName)
+            makeLargeTextView(item.repositoryName)
+
+            if let description = item.description {
+                makeRegularTextView(description)
+                    .multilineTextAlignment(.leading)
+                    .lineLimit(2)
+            }
+            
+            HStack (spacing: 20) {
+                if let language = item.language {
+                    makeBulletTextView(language)
+                }
+                
+                if let stars = item.stars {
+                    makeStarTextView("\(stars)")
+                }
+            }
+        }
+    }
+    
     @available(iOS 15.0, *)
-    func makeAsyncImage(_ url: URL) -> some View {
+    private func makeAsyncImage(_ url: URL) -> some View {
         AsyncImage(url: url) { image in
             image
                 .resizable()
@@ -70,13 +92,44 @@ struct RepositoriesView: View {
             placeholder
         }
     }
+    
+    private func makeRegularTextView(_ text: String) -> some View {
+        Text(text)
+            .font(.system(size: 14))
+    }
+    
+    private func makeLargeTextView(_ text: String) -> some View {
+        Text(text)
+            .font(.system(size: 16))
+    }
+    
+    private func makeBulletTextView(_ text: String) -> some View {
+        HStack {
+            Color.blue
+                .frame(width: 10, height: 10)
+                .cornerRadius(5)
+            makeRegularTextView(text)
+        }
+    }
+    
+    private func makeStarTextView(_ text: String) -> some View {
+        HStack {
+            Image(systemName: "star.fill")
+                .resizable()
+                .frame(width: 12, height: 12)
+                .foregroundColor(.yellow)
+            makeRegularTextView(text)
+        }
+    }
 }
 
-//struct ContentView_Previews: PreviewProvider {
-//    static var previews: some View {
-//        RepositoriesView(viewModel: RepositoriesViewModel.makeDummy())
-//    }
-//}
+struct ContentView_Previews: PreviewProvider {
+    static var previews: some View {
+        RepositoriesView(viewModel: RepositoriesViewModel.makeDummy(), imageDataLoader: {
+            DummyImageDataLoader()
+        })
+    }
+}
 
 private extension RepositoriesViewModel {
     static func makeDummy() -> RepositoriesViewModel {
@@ -88,4 +141,8 @@ private extension RepositoriesViewModel {
             [RepositoryItem(id: 1, userName: "A user", imageURL: URL(string: "https://avatars.githubusercontent.com/u/4314092?v=4")!, repositoryName: "A repo", description: nil, language: nil, stars: 222) ]
         }
     }
+}
+
+private class DummyImageDataLoader: ImageDataLoader {
+    func load(url: URL) async throws -> Data { Data() }
 }
