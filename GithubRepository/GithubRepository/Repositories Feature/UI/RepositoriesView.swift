@@ -17,7 +17,7 @@ struct RepositoriesView: View {
     }
     
     var body: some View {
-        refreshableScrollView
+        refreshableList
             .onAppear {
                 Task {
                     await viewModel.viewDidAppear()
@@ -27,70 +27,24 @@ struct RepositoriesView: View {
     }
     
     @ViewBuilder
-    private var refreshableScrollView: some View {
+    private var refreshableList: some View {
         if #available(iOS 15.0, *) {
-            loadingList
+            listContent
                 .refreshable {
                     Task {
                         await viewModel.refresh()
                     }
                 }
         } else {
-            loadingList
-        }
-    }
-    
-    @ViewBuilder
-    private var loadingList: some View {
-        if viewModel.isLoading {
-            loading
-                .frame(height: 44)
-        } else {
             listContent
         }
-    }
-    
-    private var loading: some View {
-        HStack {
-            Circle()
-                .fill(Color.gray)
-                .opacity(0.2)
-                .frame(width: 44, height: 44)
-            VStack {
-                topLine
-                    .frame(height: 10)
-                Spacer()
-                bottomLine
-                    .frame(height: 10)
-            }
-        }
-        .shimmer()
-    }
-    
-    private var topLine: some View {
-        GeometryReader { geometry in
-            HStack {
-                Rectangle()
-                    .fill(Color.gray)
-                    .cornerRadius(8)
-                    .opacity(0.2)
-                Spacer(minLength: geometry.size.width / 2)
-            }
-        }
-    }
-    
-    private var bottomLine: some View {
-        Rectangle()
-            .fill(Color.gray)
-            .cornerRadius(8)
-            .opacity(0.2)
     }
     
     private var listContent: some View {
         List {
             ForEach(viewModel.repositoryItems.indices, id: \.self) { index in
                 let item = viewModel.repositoryItems[index]
-                RepositoryRow(item: item, imageDataLoader: imageDataLoader)
+                RepositoryRow(item: item, imageDataLoader: imageDataLoader, isLoading: $viewModel.isLoading)
                     .padding()
             }
         }

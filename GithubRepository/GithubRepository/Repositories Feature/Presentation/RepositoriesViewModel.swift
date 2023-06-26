@@ -27,14 +27,13 @@ public class RepositoriesViewModel: ObservableObject {
             isLoading = false
         }
         
-        clearData()
         await load()
     }
     
     @MainActor
     public func refresh() async {
         isLoading = true
-        
+
         defer {
             isLoading = false
         }
@@ -53,6 +52,7 @@ public class RepositoriesViewModel: ObservableObject {
             self.error = error
         }
     }
+    
     private func clearData() {
         repositoryItems = []
     }

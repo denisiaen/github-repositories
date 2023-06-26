@@ -11,14 +11,20 @@ import SwiftUI
 struct RepositoryRow: View {
     private let item: RepositoryItem
     private let imageDataLoader: () -> ImageDataLoader
+    @Binding public var isLoading: Bool
     
-    init(item: RepositoryItem, imageDataLoader: @escaping () -> ImageDataLoader) {
+    init(item: RepositoryItem, imageDataLoader: @escaping () -> ImageDataLoader, isLoading: Binding<Bool>) {
         self.item = item
         self.imageDataLoader = imageDataLoader
+        self._isLoading = isLoading
     }
     
     var body: some View {
-        makeItemView(item: item)
+        if isLoading {
+            LoadingRepositoryRow()
+        } else {
+            makeItemView(item: item)
+        }
     }
     
     @ViewBuilder

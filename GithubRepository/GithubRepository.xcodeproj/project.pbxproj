@@ -34,6 +34,7 @@
 		AFB54C7D2A49E0C000C2B784 /* HTTPClientSpy.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFB54C7C2A49E0C000C2B784 /* HTTPClientSpy.swift */; };
 		AFB54C7F2A4A0BEE00C2B784 /* RepositoryRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFB54C7E2A4A0BEE00C2B784 /* RepositoryRow.swift */; };
 		AFB54C812A4A164A00C2B784 /* ShimmeringView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFB54C802A4A164A00C2B784 /* ShimmeringView.swift */; };
+		AFB54C832A4A1BB400C2B784 /* LoadingRepositoryRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFB54C822A4A1BB400C2B784 /* LoadingRepositoryRow.swift */; };
 		AFD774452A45F8A100A94454 /* RepositoriesViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFD774442A45F8A100A94454 /* RepositoriesViewModel.swift */; };
 /* End PBXBuildFile section */
 
@@ -77,6 +78,7 @@
 		AFB54C7C2A49E0C000C2B784 /* HTTPClientSpy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HTTPClientSpy.swift; sourceTree = "<group>"; };
 		AFB54C7E2A4A0BEE00C2B784 /* RepositoryRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RepositoryRow.swift; sourceTree = "<group>"; };
 		AFB54C802A4A164A00C2B784 /* ShimmeringView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShimmeringView.swift; sourceTree = "<group>"; };
+		AFB54C822A4A1BB400C2B784 /* LoadingRepositoryRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingRepositoryRow.swift; sourceTree = "<group>"; };
 		AFD774442A45F8A100A94454 /* RepositoriesViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RepositoriesViewModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -247,6 +249,9 @@
 			isa = PBXGroup;
 			children = (
 				AFB54C6D2A49909900C2B784 /* AsyncImageView.swift */,
+				AFB54C7E2A4A0BEE00C2B784 /* RepositoryRow.swift */,
+				AFB54C822A4A1BB400C2B784 /* LoadingRepositoryRow.swift */,
+				AFB54C802A4A164A00C2B784 /* ShimmeringView.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -264,8 +269,6 @@
 			children = (
 				AFB54C6A2A49903300C2B784 /* Components */,
 				AF11F5F52A447889006B13DC /* RepositoriesView.swift */,
-				AFB54C7E2A4A0BEE00C2B784 /* RepositoryRow.swift */,
-				AFB54C802A4A164A00C2B784 /* ShimmeringView.swift */,
 			);
 			path = UI;
 			sourceTree = "<group>";
@@ -379,6 +382,7 @@
 				AFB54C7B2A49C83900C2B784 /* ImageDataMapper.swift in Sources */,
 				AF3AB1402A45DF4800CD531C /* URLSessionHTTPClient.swift in Sources */,
 				AF11F62D2A447C12006B13DC /* AppDelegate.swift in Sources */,
+				AFB54C832A4A1BB400C2B784 /* LoadingRepositoryRow.swift in Sources */,
 				AFB54C812A4A164A00C2B784 /* ShimmeringView.swift in Sources */,
 				AFB54C772A49C80300C2B784 /* ImageDataLoader.swift in Sources */,
 				AFD774452A45F8A100A94454 /* RepositoriesViewModel.swift in Sources */,
