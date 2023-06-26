@@ -29,6 +29,9 @@
 		AFB54C6E2A49909900C2B784 /* AsyncImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFB54C6D2A49909900C2B784 /* AsyncImageView.swift */; };
 		AFB54C702A49B2C000C2B784 /* APIImageDataLoaderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFB54C6F2A49B2C000C2B784 /* APIImageDataLoaderTests.swift */; };
 		AFB54C742A49C04200C2B784 /* HTTPURLResponse+StatusCode.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFB54C732A49C04200C2B784 /* HTTPURLResponse+StatusCode.swift */; };
+		AFB54C772A49C80300C2B784 /* ImageDataLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFB54C762A49C80300C2B784 /* ImageDataLoader.swift */; };
+		AFB54C792A49C81800C2B784 /* APIImageDataLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFB54C782A49C81800C2B784 /* APIImageDataLoader.swift */; };
+		AFB54C7B2A49C83900C2B784 /* ImageDataMapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFB54C7A2A49C83900C2B784 /* ImageDataMapper.swift */; };
 		AFD774452A45F8A100A94454 /* RepositoriesViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFD774442A45F8A100A94454 /* RepositoriesViewModel.swift */; };
 /* End PBXBuildFile section */
 
@@ -67,6 +70,9 @@
 		AFB54C6D2A49909900C2B784 /* AsyncImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AsyncImageView.swift; sourceTree = "<group>"; };
 		AFB54C6F2A49B2C000C2B784 /* APIImageDataLoaderTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIImageDataLoaderTests.swift; sourceTree = "<group>"; };
 		AFB54C732A49C04200C2B784 /* HTTPURLResponse+StatusCode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "HTTPURLResponse+StatusCode.swift"; sourceTree = "<group>"; };
+		AFB54C762A49C80300C2B784 /* ImageDataLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageDataLoader.swift; sourceTree = "<group>"; };
+		AFB54C782A49C81800C2B784 /* APIImageDataLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIImageDataLoader.swift; sourceTree = "<group>"; };
+		AFB54C7A2A49C83900C2B784 /* ImageDataMapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageDataMapper.swift; sourceTree = "<group>"; };
 		AFD774442A45F8A100A94454 /* RepositoriesViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RepositoriesViewModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -172,7 +178,9 @@
 				AFB54C752A49C05D00C2B784 /* Helpers */,
 				AF3AB13F2A45DF4800CD531C /* URLSessionHTTPClient.swift */,
 				AF4062512A4497CE0015C9E0 /* APIRepositoriesLoader.swift */,
+				AFB54C782A49C81800C2B784 /* APIImageDataLoader.swift */,
 				AF8ABFCA2A44B92B006F5BD2 /* RepositoriesMapper.swift */,
+				AFB54C7A2A49C83900C2B784 /* ImageDataMapper.swift */,
 			);
 			path = Infrastructure;
 			sourceTree = "<group>";
@@ -190,6 +198,7 @@
 			children = (
 				AF3AB1412A45DFC500CD531C /* HTTPClient */,
 				AF11F6322A448BCA006B13DC /* RepositoriesLoader.swift */,
+				AFB54C762A49C80300C2B784 /* ImageDataLoader.swift */,
 			);
 			path = UseCases;
 			sourceTree = "<group>";
@@ -358,11 +367,14 @@
 			buildActionMask = 2147483647;
 			files = (
 				AFB54C6E2A49909900C2B784 /* AsyncImageView.swift in Sources */,
+				AFB54C792A49C81800C2B784 /* APIImageDataLoader.swift in Sources */,
 				AF3AB13E2A45DF2500CD531C /* URLSessionProtocol.swift in Sources */,
 				AFB54C742A49C04200C2B784 /* HTTPURLResponse+StatusCode.swift in Sources */,
 				AFB54C6C2A49904A00C2B784 /* CircularAsyncImage.swift in Sources */,
+				AFB54C7B2A49C83900C2B784 /* ImageDataMapper.swift in Sources */,
 				AF3AB1402A45DF4800CD531C /* URLSessionHTTPClient.swift in Sources */,
 				AF11F62D2A447C12006B13DC /* AppDelegate.swift in Sources */,
+				AFB54C772A49C80300C2B784 /* ImageDataLoader.swift in Sources */,
 				AFD774452A45F8A100A94454 /* RepositoriesViewModel.swift in Sources */,
 				AF4062522A4497CE0015C9E0 /* APIRepositoriesLoader.swift in Sources */,
 				AFB1E2DF2A45C06D00056D3E /* HTTPClient.swift in Sources */,
