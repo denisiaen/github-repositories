@@ -31,6 +31,7 @@
 		AFB54C772A49C80300C2B784 /* ImageDataLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFB54C762A49C80300C2B784 /* ImageDataLoader.swift */; };
 		AFB54C792A49C81800C2B784 /* APIImageDataLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFB54C782A49C81800C2B784 /* APIImageDataLoader.swift */; };
 		AFB54C7B2A49C83900C2B784 /* ImageDataMapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFB54C7A2A49C83900C2B784 /* ImageDataMapper.swift */; };
+		AFB54C7D2A49E0C000C2B784 /* HTTPClientSpy.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFB54C7C2A49E0C000C2B784 /* HTTPClientSpy.swift */; };
 		AFD774452A45F8A100A94454 /* RepositoriesViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFD774442A45F8A100A94454 /* RepositoriesViewModel.swift */; };
 /* End PBXBuildFile section */
 
@@ -71,6 +72,7 @@
 		AFB54C762A49C80300C2B784 /* ImageDataLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageDataLoader.swift; sourceTree = "<group>"; };
 		AFB54C782A49C81800C2B784 /* APIImageDataLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIImageDataLoader.swift; sourceTree = "<group>"; };
 		AFB54C7A2A49C83900C2B784 /* ImageDataMapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageDataMapper.swift; sourceTree = "<group>"; };
+		AFB54C7C2A49E0C000C2B784 /* HTTPClientSpy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HTTPClientSpy.swift; sourceTree = "<group>"; };
 		AFD774442A45F8A100A94454 /* RepositoriesViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RepositoriesViewModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -205,6 +207,7 @@
 			isa = PBXGroup;
 			children = (
 				AF3AB1472A45E19900CD531C /* XCTestCase+MemoryLeakTracking.swift */,
+				AFB54C7C2A49E0C000C2B784 /* HTTPClientSpy.swift */,
 				AF3AB1492A45E2AB00CD531C /* TestHelpers.swift */,
 			);
 			path = Helpers;
@@ -391,6 +394,7 @@
 				AFB1E2E12A45C2B700056D3E /* URLSessionHTTPClientTests.swift in Sources */,
 				AF3AB14E2A45E43D00CD531C /* RepositoriesViewModelTests.swift in Sources */,
 				AF3AB1482A45E19900CD531C /* XCTestCase+MemoryLeakTracking.swift in Sources */,
+				AFB54C7D2A49E0C000C2B784 /* HTTPClientSpy.swift in Sources */,
 				AF3AB14A2A45E2AB00CD531C /* TestHelpers.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

@@ -49,7 +49,7 @@ struct RepositoriesView: View {
         if #available(iOS 15.0, *) {
             makeAsyncImage(url)
         } else {
-            AsyncImageView(url: url, imageDataLoader: imageDataLoader, placeholder: placeholder)
+            AsyncImageView(url: url, imageDataLoader: imageDataLoader(), placeholder: placeholder)
         }
     }
     

@@ -12,8 +12,8 @@ struct AsyncImageView<Placeholder: View>: View {
     
     @ObservedObject var viewModel: AsyncImageViewModel
     
-    init(url: URL, imageDataLoader: () -> ImageDataLoader, placeholder: Placeholder) {
-        self.viewModel = AsyncImageViewModel(imageDataLoader: imageDataLoader(), url: url)
+    init(url: URL, imageDataLoader: ImageDataLoader, placeholder: Placeholder) {
+        self.viewModel = AsyncImageViewModel(imageDataLoader: imageDataLoader, url: url)
         self.placeholder = placeholder
     }
 
