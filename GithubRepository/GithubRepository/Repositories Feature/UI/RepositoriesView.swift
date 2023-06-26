@@ -20,13 +20,7 @@ struct RepositoriesView: View {
         ScrollView(showsIndicators: false) {
             ForEach(viewModel.repositoryItems.indices, id: \.self) { index in
                 let item = viewModel.repositoryItems[index]
-                HStack {
-                    makeAvailableAsyncImage(item.imageURL)
-                        .frame(width: 20, height: 20)
-                    Text(item.userName)
-                        .foregroundColor(.black)
-                    Spacer()
-                }
+                makeItemView(item: item)
                 Divider()
             }
         }
@@ -42,6 +36,20 @@ struct RepositoriesView: View {
         Circle()
             .fill(Color.gray)
             .frame(width: 20, height: 20)
+    }
+    
+    @ViewBuilder
+    func makeItemView(item: RepositoryItem) -> some View {
+        let size: CGFloat = 40
+        HStack {
+            makeAvailableAsyncImage(item.imageURL)
+                .frame(width: size, height: size)
+                .cornerRadius(size / 2)
+            Text(item.userName)
+                .foregroundColor(.black)
+            Spacer()
+        }
+        
     }
     
     @ViewBuilder
