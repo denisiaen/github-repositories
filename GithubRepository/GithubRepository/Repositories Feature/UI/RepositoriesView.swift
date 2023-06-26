@@ -17,13 +17,22 @@ struct RepositoriesView: View {
     }
     
     var body: some View {
-        refreshableList
+        loadingList
             .onAppear {
                 Task {
                     await viewModel.viewDidAppear()
                 }
             }
             .navigationBarTitle("Trending", displayMode: .automatic)
+    }
+    
+    @ViewBuilder
+    private var loadingList: some View {
+        if viewModel.isLoading {
+            ActivityIndicator()
+        } else {
+            refreshableList
+        }
     }
     
     @ViewBuilder
@@ -44,7 +53,7 @@ struct RepositoriesView: View {
         List {
             ForEach(viewModel.repositoryItems.indices, id: \.self) { index in
                 let item = viewModel.repositoryItems[index]
-                RepositoryRow(item: item, imageDataLoader: imageDataLoader, isLoading: $viewModel.isLoading)
+                RepositoryRow(item: item, imageDataLoader: imageDataLoader, isLoading: $viewModel.isRefreshing)
                     .padding()
             }
         }

@@ -13,6 +13,7 @@ public class RepositoriesViewModel: ObservableObject {
     
     @Published public var repositoryItems = [RepositoryItem]()
     @Published public var isLoading = false
+    @Published public var isRefreshing = false
     @Published public var error: Error?
     
     public init(repositoriesLoader: RepositoriesLoader) {
@@ -32,10 +33,10 @@ public class RepositoriesViewModel: ObservableObject {
     
     @MainActor
     public func refresh() async {
-        isLoading = true
+        isRefreshing = true
 
         defer {
-            isLoading = false
+            isRefreshing = false
         }
         
         clearData()
