@@ -20,6 +20,11 @@ class APIImageDataLoader {
         self.client = client
         self.url = url
     }
+    
+    func load() async throws -> Data {
+        _ = try await client.get(from: url)
+        return Data()
+    }
 }
 
 final class APIImageDataLoaderTests: XCTestCase {
@@ -28,6 +33,15 @@ final class APIImageDataLoaderTests: XCTestCase {
         let (_, client) = makeSUT()
 
         XCTAssertTrue(client.requestedURLs.isEmpty)
+    }
+    
+    func test_load_requestsDataFromURL() async throws {
+        let url = URL(string: "https://a-url")!
+        let (sut, client) = makeSUT()
+
+        _ = try await sut.load()
+        
+        XCTAssertEqual(client.requestedURLs, [url])
     }
     
     // MARK: - Helpers
