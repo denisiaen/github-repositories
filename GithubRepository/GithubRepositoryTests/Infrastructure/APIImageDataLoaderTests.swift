@@ -12,9 +12,13 @@ protocol ImageDataLoader {
     
 }
 
+struct ImageLoadError: Error {}
+
+
 class APIImageDataLoader {
     private let client: HTTPClient
     private let url: URL
+    
     
     init(client: HTTPClient, url: URL) {
         self.client = client
@@ -22,8 +26,12 @@ class APIImageDataLoader {
     }
     
     func load() async throws -> Data {
-        _ = try await client.get(from: url)
-        return Data()
+        do {
+            let _ = try await client.get(from: url)
+            return Data()
+        } catch {
+            throw ImageLoadError()
+        }
     }
 }
 
@@ -54,6 +62,12 @@ final class APIImageDataLoaderTests: XCTestCase {
         XCTAssertEqual(client.requestedURLs, [url, url])
     }
     
+    func test_load_deliversErrorOnClientError() async throws {
+        let (sut, _) = makeSUT(result: .failure(anyNSError()))
+                
+        await expect(sut, toThrowError: ImageLoadError.self)
+    }
+    
     // MARK: - Helpers
     
     private func makeSUT(url: URL = URL(string: "https://a-url")!, result: Result<(Data, HTTPURLResponse), Error> = .success((Data(), HTTPURLResponse())), file: StaticString = #filePath, line: UInt = #line) -> (sut: APIImageDataLoader, client: HTTPClientSpy) {
@@ -62,6 +76,15 @@ final class APIImageDataLoaderTests: XCTestCase {
         trackForMemoryLeaks(sut, file: file, line: line)
         trackForMemoryLeaks(client, file: file, line: line)
         return (sut, client)
+    }
+    
+    private func expect<E: Error>(_ sut: APIImageDataLoader, toThrowError expectedError: E.Type, file: StaticString = #filePath, line: UInt = #line) async {
+        do {
+            _ = try await sut.load()
+            XCTFail("Expected to throw \(expectedError)", file: file, line: line)
+        } catch {
+            XCTAssertTrue(error is E, file: file, line: line)
+        }
     }
 }
 
