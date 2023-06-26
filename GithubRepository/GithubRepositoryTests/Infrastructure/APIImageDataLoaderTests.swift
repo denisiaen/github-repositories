@@ -44,6 +44,16 @@ final class APIImageDataLoaderTests: XCTestCase {
         XCTAssertEqual(client.requestedURLs, [url])
     }
     
+    func test_loadTwice_requestsDataFromURLTwice() async throws {
+        let url = URL(string: "https://a-url")!
+        let (sut, client) = makeSUT()
+
+        _ = try await sut.load()
+        _ = try await sut.load()
+        
+        XCTAssertEqual(client.requestedURLs, [url, url])
+    }
+    
     // MARK: - Helpers
     
     private func makeSUT(url: URL = URL(string: "https://a-url")!, result: Result<(Data, HTTPURLResponse), Error> = .success((Data(), HTTPURLResponse())), file: StaticString = #filePath, line: UInt = #line) -> (sut: APIImageDataLoader, client: HTTPClientSpy) {
