@@ -8,11 +8,12 @@
 import SwiftUI
 
 struct RepositoriesView: View {
-    
+    private let imageDataLoader: () -> ImageDataLoader
     @ObservedObject var viewModel: RepositoriesViewModel
     
-    init(viewModel: RepositoriesViewModel) {
+    init(viewModel: RepositoriesViewModel, imageDataLoader: @escaping () -> ImageDataLoader) {
         self.viewModel = viewModel
+        self.imageDataLoader = imageDataLoader
     }
     
     var body: some View {
@@ -20,7 +21,7 @@ struct RepositoriesView: View {
             ForEach(viewModel.repositoryItems.indices, id: \.self) { index in
                 let item = viewModel.repositoryItems[index]
                 HStack {
-                    CircularAsyncImage(url: item.imageURL, placeholder: placeholder)
+                    makeAvailableAsyncImage(item.imageURL)
                         .frame(width: 20, height: 20)
                     Text(item.userName)
                         .foregroundColor(.black)
@@ -42,13 +43,32 @@ struct RepositoriesView: View {
             .fill(Color.gray)
             .frame(width: 20, height: 20)
     }
-}
-
-struct ContentView_Previews: PreviewProvider {
-    static var previews: some View {
-        RepositoriesView(viewModel: RepositoriesViewModel.makeDummy())
+    
+    @ViewBuilder
+    func makeAvailableAsyncImage(_ url: URL) -> some View {
+        if #available(iOS 15.0, *) {
+            makeAsyncImage(url)
+        } else {
+            AsyncImageView(url: url, imageDataLoader: imageDataLoader, placeholder: placeholder)
+        }
+    }
+    
+    @available(iOS 15.0, *)
+    func makeAsyncImage(_ url: URL) -> some View {
+        AsyncImage(url: url) { image in
+            image
+                .resizable()
+        } placeholder: {
+            placeholder
+        }
     }
 }
+
+//struct ContentView_Previews: PreviewProvider {
+//    static var previews: some View {
+//        RepositoriesView(viewModel: RepositoriesViewModel.makeDummy())
+//    }
+//}
 
 private extension RepositoriesViewModel {
     static func makeDummy() -> RepositoriesViewModel {

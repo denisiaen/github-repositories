@@ -9,19 +9,17 @@ import Foundation
 
 public class APIImageDataLoader: ImageDataLoader {
     private let client: HTTPClient
-    private let url: URL
     
     public enum Error: Swift.Error {
         case failed
         case invalidData
     }
     
-    public init(client: HTTPClient, url: URL) {
+    public init(client: HTTPClient) {
         self.client = client
-        self.url = url
     }
     
-    public func load() async throws -> Data {
+    public func load(url: URL) async throws -> Data {
         guard let (data, response) = try? await client.get(from: url) else {
             throw Error.failed
         }
@@ -29,3 +27,5 @@ public class APIImageDataLoader: ImageDataLoader {
         return try ImageDataMapper.map(data, from: response)
     }
 }
+
+

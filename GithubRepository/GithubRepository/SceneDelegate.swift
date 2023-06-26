@@ -21,10 +21,29 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     }
     
     func makeRepositoriesView() -> RepositoriesView {
-        let httpClient = URLSessionHTTPClient()
+        RepositoriesUIComposer.repositoriesComposeWith(repositoriesLoader: apiRepositoriesLoader, imageDataLoader: makeApiImageDataLoader)
+    }
+    
+    var httpClient: HTTPClient {
+        let urlSession = URLSessionHTTPClient()
+        return urlSession
+    }
+    
+    lazy var apiRepositoriesLoader: RepositoriesLoader = {
         let url = URL(string: "https://api.github.com/search/repositories?q=language=+sort:stars")!
-        let apiRepositoriesLoader = APIRepositoriesLoader(client: httpClient, url: url)
-        let viewModel = RepositoriesViewModel(repositoriesLoader: apiRepositoriesLoader)
-        return RepositoriesView(viewModel: viewModel)
+        return APIRepositoriesLoader(client: httpClient, url: url)
+    }()
+    
+    func makeApiImageDataLoader() -> ImageDataLoader {
+        APIImageDataLoader(client: httpClient)
+    }
+}
+
+final class RepositoriesUIComposer {
+    private init() {}
+    
+    static func repositoriesComposeWith(repositoriesLoader: RepositoriesLoader, imageDataLoader: @escaping () -> ImageDataLoader) -> RepositoriesView {
+        let viewModel = RepositoriesViewModel(repositoriesLoader: repositoriesLoader)
+        return RepositoriesView(viewModel: viewModel, imageDataLoader: imageDataLoader)
     }
 }

@@ -20,7 +20,7 @@ final class APIImageDataLoaderTests: XCTestCase {
         let url = URL(string: "https://a-url")!
         let (sut, client) = makeSUT()
 
-        _ = try await sut.load()
+        _ = try await sut.load(url: url)
         
         XCTAssertEqual(client.requestedURLs, [url])
     }
@@ -29,8 +29,8 @@ final class APIImageDataLoaderTests: XCTestCase {
         let url = URL(string: "https://a-url")!
         let (sut, client) = makeSUT()
 
-        _ = try await sut.load()
-        _ = try await sut.load()
+        _ = try await sut.load(url: url)
+        _ = try await sut.load(url: url)
         
         XCTAssertEqual(client.requestedURLs, [url, url])
     }
@@ -68,7 +68,7 @@ final class APIImageDataLoaderTests: XCTestCase {
     
     private func makeSUT(url: URL = URL(string: "https://a-url")!, result: Result<(Data, HTTPURLResponse), Error> = .success((anyData(), HTTPURLResponse())), file: StaticString = #filePath, line: UInt = #line) -> (sut: ImageDataLoader, client: HTTPClientSpy) {
         let client = HTTPClientSpy(result: result)
-        let sut = APIImageDataLoader(client: client, url: url)
+        let sut = APIImageDataLoader(client: client)
         trackForMemoryLeaks(sut, file: file, line: line)
         trackForMemoryLeaks(client, file: file, line: line)
         return (sut, client)
@@ -76,7 +76,7 @@ final class APIImageDataLoaderTests: XCTestCase {
     
     private func expect(_ sut: ImageDataLoader, toSucceedWith data: Data, file: StaticString = #filePath, line: UInt = #line) async {
         do {
-            let result = try await sut.load()
+            let result = try await sut.load(url: anyURL())
             XCTAssertEqual(result, data, file: file, line: line)
         } catch {
             XCTFail("Expected success, got error: \(error)", file: file, line: line)
@@ -85,7 +85,7 @@ final class APIImageDataLoaderTests: XCTestCase {
     
     private func expect(_ sut: ImageDataLoader, toThrowError expectedError: APIImageDataLoader.Error, file: StaticString = #filePath, line: UInt = #line) async {
         do {
-            _ = try await sut.load()
+            _ = try await sut.load(url: anyURL())
             XCTFail("Expected to throw error: \(expectedError)", file: file, line: line)
         } catch {
             XCTAssertEqual(error as? APIImageDataLoader.Error, expectedError, file: file, line: line)
