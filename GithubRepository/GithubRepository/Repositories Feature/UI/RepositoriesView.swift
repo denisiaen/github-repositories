@@ -24,6 +24,15 @@ struct RepositoriesView: View {
                 }
             }
             .navigationBarTitle("Trending", displayMode: .automatic)
+            .navigationBarItems(
+                trailing: HStack {
+                    Button("Reload") {
+                        Task {
+                            await viewModel.refresh()
+                        }
+                    }
+                }
+            )
     }
     
     @ViewBuilder

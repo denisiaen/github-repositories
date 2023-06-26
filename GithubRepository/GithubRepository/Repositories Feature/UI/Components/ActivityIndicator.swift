@@ -15,7 +15,7 @@ public struct ActivityIndicator: View {
     private var size: CGFloat
     private var lineWidth: CGFloat
     
-    public init(strokeColor: Color = .gray, size: CGFloat = 20, lineWidth: CGFloat = 1.5) {
+    public init(strokeColor: Color = .gray, size: CGFloat = 25, lineWidth: CGFloat = 1.5) {
         self.strokeColor = strokeColor
         self.size = size
         self.lineWidth = lineWidth
