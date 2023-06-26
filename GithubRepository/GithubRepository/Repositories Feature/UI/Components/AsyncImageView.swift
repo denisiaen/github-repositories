@@ -18,17 +18,22 @@ struct AsyncImageView<Placeholder: View>: View {
     }
 
     var body: some View {
+        content
+            .onAppear {
+                Task {
+                    await viewModel.viewDidAppear()
+                }
+            }
+    }
+    
+    private var content: some View {
         VStack {
             if let imageData = viewModel.data, let uiImage = UIImage(data: imageData) {
                 Image(uiImage: uiImage)
-                               .resizable()
-                               .aspectRatio(contentMode: .fit)
+                    .resizable()
+                    .aspectRatio(contentMode: .fit)
             } else {
                 placeholder
-            }
-        }.onAppear {
-            Task {
-                await viewModel.viewDidAppear()
             }
         }
     }

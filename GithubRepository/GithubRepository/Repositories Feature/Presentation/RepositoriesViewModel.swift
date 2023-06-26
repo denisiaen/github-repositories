@@ -27,10 +27,34 @@ public class RepositoriesViewModel: ObservableObject {
             isLoading = false
         }
         
+        clearData()
+        await load()
+    }
+    
+    @MainActor
+    public func refresh() async {
+        isLoading = true
+        
+        defer {
+            isLoading = false
+        }
+        
+        clearData()
+        await load()
+    }
+    
+    // MARK: - Helpers
+    
+    @MainActor
+    private func load() async {
         do {
             repositoryItems = try await repositoriesLoader.load()
         } catch {
             self.error = error
         }
     }
+    private func clearData() {
+        repositoryItems = []
+    }
 }
+

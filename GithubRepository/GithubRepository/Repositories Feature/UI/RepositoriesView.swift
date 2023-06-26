@@ -17,7 +17,7 @@ struct RepositoriesView: View {
     }
     
     var body: some View {
-        scrollableContent
+        refreshableScrollView
             .onAppear {
                 Task {
                     await viewModel.viewDidAppear()
@@ -26,105 +26,75 @@ struct RepositoriesView: View {
             .navigationBarTitle("Trending", displayMode: .automatic)
     }
     
-    private var scrollableContent: some View {
-        ScrollView(showsIndicators: false) {
+    @ViewBuilder
+    private var refreshableScrollView: some View {
+        if #available(iOS 15.0, *) {
+            loadingList
+                .refreshable {
+                    Task {
+                        await viewModel.refresh()
+                    }
+                }
+        } else {
+            loadingList
+        }
+    }
+    
+    @ViewBuilder
+    private var loadingList: some View {
+        if viewModel.isLoading {
+            loading
+                .frame(height: 44)
+        } else {
+            listContent
+        }
+    }
+    
+    private var loading: some View {
+        HStack {
+            Circle()
+                .fill(Color.gray)
+                .opacity(0.2)
+                .frame(width: 44, height: 44)
+            VStack {
+                topLine
+                    .frame(height: 10)
+                Spacer()
+                bottomLine
+                    .frame(height: 10)
+            }
+        }
+        .shimmer()
+    }
+    
+    private var topLine: some View {
+        GeometryReader { geometry in
+            HStack {
+                Rectangle()
+                    .fill(Color.gray)
+                    .cornerRadius(8)
+                    .opacity(0.2)
+                Spacer(minLength: geometry.size.width / 2)
+            }
+        }
+    }
+    
+    private var bottomLine: some View {
+        Rectangle()
+            .fill(Color.gray)
+            .cornerRadius(8)
+            .opacity(0.2)
+    }
+    
+    private var listContent: some View {
+        List {
             ForEach(viewModel.repositoryItems.indices, id: \.self) { index in
                 let item = viewModel.repositoryItems[index]
-                makeItemView(item: item)
+                RepositoryRow(item: item, imageDataLoader: imageDataLoader)
                     .padding()
-                Divider()
             }
         }
-    }
-    
-    private var placeholder: some View {
-        Circle()
-            .fill(Color.gray)
-            .frame(width: 20, height: 20)
-    }
-    
-    @ViewBuilder
-    private func makeItemView(item: RepositoryItem) -> some View {
-        let size: CGFloat = 40
-        HStack(alignment: .top) {
-            makeAvailableAsyncImage(item.imageURL)
-                .frame(width: size, height: size)
-                .cornerRadius(size / 2)
-                .padding(.trailing, 10)
-            makeTextItemView(item)
-            Spacer()
-        }
-    }
-    
-    @ViewBuilder
-    private func makeAvailableAsyncImage(_ url: URL) -> some View {
-        if #available(iOS 15.0, *) {
-            makeAsyncImage(url)
-        } else {
-            AsyncImageView(url: url, imageDataLoader: imageDataLoader(), placeholder: placeholder)
-        }
-    }
-    
-    private func makeTextItemView(_ item: RepositoryItem) -> some View {
-        VStack(alignment: .leading, spacing: 10) {
-            makeRegularTextView(item.userName)
-            makeLargeTextView(item.repositoryName)
-
-            if let description = item.description {
-                makeRegularTextView(description)
-                    .multilineTextAlignment(.leading)
-                    .lineLimit(2)
-            }
-            
-            HStack (spacing: 20) {
-                if let language = item.language {
-                    makeBulletTextView(language)
-                }
-                
-                if let stars = item.stars {
-                    makeStarTextView("\(stars)")
-                }
-            }
-        }
-    }
-    
-    @available(iOS 15.0, *)
-    private func makeAsyncImage(_ url: URL) -> some View {
-        AsyncImage(url: url) { image in
-            image
-                .resizable()
-        } placeholder: {
-            placeholder
-        }
-    }
-    
-    private func makeRegularTextView(_ text: String) -> some View {
-        Text(text)
-            .font(.system(size: 14))
-    }
-    
-    private func makeLargeTextView(_ text: String) -> some View {
-        Text(text)
-            .font(.system(size: 16))
-    }
-    
-    private func makeBulletTextView(_ text: String) -> some View {
-        HStack {
-            Color.blue
-                .frame(width: 10, height: 10)
-                .cornerRadius(5)
-            makeRegularTextView(text)
-        }
-    }
-    
-    private func makeStarTextView(_ text: String) -> some View {
-        HStack {
-            Image(systemName: "star.fill")
-                .resizable()
-                .frame(width: 12, height: 12)
-                .foregroundColor(.yellow)
-            makeRegularTextView(text)
-        }
+        .listStyle(.plain)
     }
 }
 
