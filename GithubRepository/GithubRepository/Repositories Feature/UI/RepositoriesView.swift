@@ -17,17 +17,22 @@ struct RepositoriesView: View {
     }
     
     var body: some View {
+        scrollableContent
+            .onAppear {
+                Task {
+                    await viewModel.viewDidAppear()
+                }
+            }
+            .navigationBarTitle("Trending", displayMode: .automatic)
+    }
+    
+    private var scrollableContent: some View {
         ScrollView(showsIndicators: false) {
             ForEach(viewModel.repositoryItems.indices, id: \.self) { index in
                 let item = viewModel.repositoryItems[index]
                 makeItemView(item: item)
                     .padding()
                 Divider()
-            }
-        }
-        .onAppear {
-            Task {
-                await viewModel.viewDidAppear()
             }
         }
     }

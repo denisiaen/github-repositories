@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import UIKit
 
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     
@@ -14,27 +15,31 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
         if let windowScene = scene as? UIWindowScene {
             let window = UIWindow(windowScene: windowScene)
-            window.rootViewController = UIHostingController(rootView:  makeRepositoriesView())
+            window.rootViewController = navigationController
             self.window = window
             window.makeKeyAndVisible()
         }
     }
     
-    func makeRepositoriesView() -> RepositoriesView {
-        RepositoriesUIComposer.repositoriesComposeWith(repositoriesLoader: apiRepositoriesLoader, imageDataLoader: makeApiImageDataLoader)
+    private lazy var navigationController = UINavigationController(rootViewController: UIHostingController(rootView:  makeRepositoriesView()))
+    
+    private func makeRepositoriesView() -> RepositoriesView {
+        RepositoriesUIComposer.repositoriesComposeWith(
+            repositoriesLoader: apiRepositoriesLoader, imageDataLoader: makeApiImageDataLoader
+        )
     }
     
-    var httpClient: HTTPClient {
+    private var httpClient: HTTPClient {
         let urlSession = URLSessionHTTPClient()
         return urlSession
     }
     
-    lazy var apiRepositoriesLoader: RepositoriesLoader = {
+    private lazy var apiRepositoriesLoader: RepositoriesLoader = {
         let url = URL(string: "https://api.github.com/search/repositories?q=language=+sort:stars")!
         return APIRepositoriesLoader(client: httpClient, url: url)
     }()
     
-    func makeApiImageDataLoader() -> ImageDataLoader {
+    private func makeApiImageDataLoader() -> ImageDataLoader {
         APIImageDataLoader(client: httpClient)
     }
 }
