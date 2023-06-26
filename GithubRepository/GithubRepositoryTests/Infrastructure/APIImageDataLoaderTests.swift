@@ -12,13 +12,15 @@ protocol ImageDataLoader {
     
 }
 
-struct ImageLoadError: Error {}
-
 
 class APIImageDataLoader {
     private let client: HTTPClient
     private let url: URL
     
+    public enum Error: Swift.Error {
+        case failed
+        case invalidData
+    }
     
     init(client: HTTPClient, url: URL) {
         self.client = client
@@ -26,15 +28,25 @@ class APIImageDataLoader {
     }
     
     func load() async throws -> Data {
-        do {
-            let (_, response) = try await client.get(from: url)
-            guard response.isOK else {
-                throw ImageLoadError()
-            }
-            return Data()
-        } catch {
-            throw ImageLoadError()
+        
+        guard let (data, response) = try? await client.get(from: url) else {
+            throw Error.failed
         }
+        
+        return try ImageDataMapper.map(data, from: response)
+    }
+}
+
+final class ImageDataMapper {
+    
+    private init() {}
+
+    static func map(_ data: Data, from response: HTTPURLResponse) throws -> Data {
+        guard response.isOK else {
+            throw APIImageDataLoader.Error.invalidData
+        }
+        
+        return data
     }
 }
 
@@ -68,7 +80,7 @@ final class APIImageDataLoaderTests: XCTestCase {
     func test_load_deliversErrorOnClientError() async throws {
         let (sut, _) = makeSUT(result: .failure(anyNSError()))
                 
-        await expect(sut, toThrowError: ImageLoadError.self)
+        await expect(sut, toThrowError: .failed)
     }
     
     func test_load_deliversErrorOnNon200HTTPResponse() async throws {
@@ -77,7 +89,7 @@ final class APIImageDataLoaderTests: XCTestCase {
         for code in samples {
             let non200Response = (Data(), httpResponse(code: code))
             let (sut, _) = makeSUT(result: .success(non200Response))
-            await expect(sut, toThrowError: ImageLoadError.self)
+            await expect(sut, toThrowError: .invalidData)
         }
     }
     
@@ -91,12 +103,12 @@ final class APIImageDataLoaderTests: XCTestCase {
         return (sut, client)
     }
     
-    private func expect<E: Error>(_ sut: APIImageDataLoader, toThrowError expectedError: E.Type, file: StaticString = #filePath, line: UInt = #line) async {
+    private func expect(_ sut: APIImageDataLoader, toThrowError expectedError: APIImageDataLoader.Error, file: StaticString = #filePath, line: UInt = #line) async {
         do {
             _ = try await sut.load()
             XCTFail("Expected to throw \(expectedError)", file: file, line: line)
         } catch {
-            XCTAssertTrue(error is E, file: file, line: line)
+            XCTAssertEqual(error as? APIImageDataLoader.Error, expectedError, file: file, line: line)
         }
     }
 }
