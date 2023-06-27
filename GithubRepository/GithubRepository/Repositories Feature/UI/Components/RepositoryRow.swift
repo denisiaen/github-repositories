@@ -20,13 +20,8 @@ struct RepositoryRow: View {
     }
     
     var body: some View {
-        ZStack {
-            makeItemView(item: item)
-            
-            if isLoading {
-                ShimmeringContentView()
-            }
-        }
+        makeItemView(item: item)
+            .shimmer(isLoading)
     }
     
     @ViewBuilder

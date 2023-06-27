@@ -38,26 +38,30 @@ struct Redactable: ViewModifier {
 }
 
 struct Placeholder: ViewModifier {
-  func body(content: Content) -> some View {
-      content
-          .opacity(0)
-          .overlay(
-            RoundedRectangle(cornerRadius: 2)
-                .fill(Color.black.opacity(0.1))
-                .padding(.vertical, 4.5)
-          )
-  }
+    @Environment(\.colorScheme) private var colorScheme
+    
+    func body(content: Content) -> some View {
+        content
+            .opacity(0)
+            .overlay(
+                RoundedRectangle(cornerRadius: 2)
+                    .opacity(colorScheme == .dark ? 0.4 : 0.2)
+                    .padding(.vertical, 4.5)
+            )
+    }
 }
 
 struct CirclePlaceholder: ViewModifier {
-  func body(content: Content) -> some View {
-    content
-      .opacity(0)
-      .overlay(
-        Circle()
-            .opacity(0.1)
-            .frame(width: 40, height: 40)
-
-    )
-  }
+    @Environment(\.colorScheme) private var colorScheme
+    
+    func body(content: Content) -> some View {
+        content
+            .opacity(0)
+            .overlay(
+                Circle()
+                    .opacity(colorScheme == .dark ? 0.4 : 0.2)
+                    .frame(width: 40, height: 40)
+                
+            )
+    }
 }
