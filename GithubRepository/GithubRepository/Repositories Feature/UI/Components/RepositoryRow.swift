@@ -20,10 +20,12 @@ struct RepositoryRow: View {
     }
     
     var body: some View {
-        if isLoading {
-            LoadingRepositoryRow()
-        } else {
+        ZStack {
             makeItemView(item: item)
+            
+            if isLoading {
+                ShimmeringContentView()
+            }
         }
     }
     
@@ -35,6 +37,7 @@ struct RepositoryRow: View {
                 .frame(width: size, height: size)
                 .cornerRadius(size / 2)
                 .padding(.trailing, 10)
+
             makeTextItemView(item)
             Spacer()
         }
@@ -42,11 +45,18 @@ struct RepositoryRow: View {
     
     @ViewBuilder
     private func makeAvailableAsyncImage(_ url: URL) -> some View {
-//        if #available(iOS 15.0, *) {
-//            makeAsyncImage(url)
-//        } else {
-            AsyncImageView(url: url, viewModel: asyncImageViewModel(), placeholder: placeholder)
-//        }
+        if #available(iOS 15.0, *) {
+            makeAsyncImage(url)
+        } else {
+            let asyncImageView = AsyncImageView(url: url, viewModel: asyncImageViewModel(), placeholder: placeholder)
+            
+            if #available(iOS 14.0, *) {
+                asyncImageView
+            } else {
+                asyncImageView
+                    .redacted(reason: isLoading ? .circularPlaceholder : nil)
+            }
+        }
     }
     
     private func makeTextItemView(_ item: RepositoryItem) -> some View {
@@ -82,14 +92,19 @@ struct RepositoryRow: View {
         }
     }
     
+    @ViewBuilder
     private func makeRegularTextView(_ text: String) -> some View {
-        Text(text)
-            .font(.system(size: 14))
+        redacted(
+            Text(text)
+                .font(.system(size: 14))
+        )
     }
     
     private func makeLargeTextView(_ text: String) -> some View {
-        Text(text)
-            .font(.system(size: 16))
+        redacted(
+            Text(text)
+                .font(.system(size: 16))
+        )
     }
     
     private func makeBulletTextView(_ text: String) -> some View {
@@ -102,7 +117,7 @@ struct RepositoryRow: View {
     }
     
     private func makeStarTextView(_ text: String) -> some View {
-        HStack {
+       HStack {
             Image(systemName: "star.fill")
                 .resizable()
                 .frame(width: 12, height: 12)
@@ -111,9 +126,17 @@ struct RepositoryRow: View {
         }
     }
     
+    @ViewBuilder
+    private func redacted<Content: View>(_ content: Content) -> some View {
+        if #available(iOS 14.0, *) {
+            content
+        } else {
+            content
+                .redacted(reason: isLoading ? .placeholder : nil)
+        }
+    }
+    
     private var placeholder: some View {
-        Circle()
-            .fill(Color.gray)
-            .frame(width: 20, height: 20)
+        ActivityIndicator(size: 10)
     }
 }

@@ -8,31 +8,14 @@
 import Foundation
 import SwiftUI
 
-public extension View {
-    func shimmer() -> some View {
-        modifier(ShimmerModifier())
-    }
-}
-
-public struct ShimmerModifier: ViewModifier {
-    public func body(content: Content) -> some View {
-        ShimmeringView() { content }
-    }
-}
-
-struct ShimmeringView<Content: View>: View {
+struct ShimmeringContentView: View {
     @Environment(\.colorScheme) private var colorScheme
-    private let content: () -> Content
-        
+    
     @State private var startPoint: UnitPoint = UnitPoint(x: -1, y: 0.5)
     @State private var endPoint: UnitPoint = .leading
     
     private var shimmerColor: Color {
         return colorScheme == .dark ? Color.white : Color.black
-    }
-    
-    init(@ViewBuilder content: @escaping () -> Content) {
-        self.content = content
     }
     
     private var gradient: LinearGradient {
@@ -46,7 +29,6 @@ struct ShimmeringView<Content: View>: View {
     
     var body: some View {
         ZStack {
-            content()
             gradient
                 .opacity(0.6)
                 .blendMode(.screen)

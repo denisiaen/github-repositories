@@ -46,6 +46,16 @@ struct RepositoriesView: View {
                 }
             })
         } else {
+            redactableList
+        }
+    }
+    
+    @ViewBuilder
+    private var redactableList: some View {
+        if #available(iOS 14.0, *) {
+            refreshableList
+                .redacted(reason: viewModel.isRefreshing ? .placeholder : [])
+        } else {
             refreshableList
         }
     }
@@ -55,9 +65,7 @@ struct RepositoriesView: View {
         if #available(iOS 15.0, *) {
             listContent
                 .refreshable {
-                    Task {
-                        await viewModel.refresh()
-                    }
+                    await viewModel.refresh()
                 }
         } else {
             listContent

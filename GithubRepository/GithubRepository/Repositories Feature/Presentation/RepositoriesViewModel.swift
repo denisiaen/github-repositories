@@ -39,7 +39,6 @@ public class RepositoriesViewModel: ObservableObject {
             isRefreshing = false
         }
         
-        clearData()
         await load()
     }
     

@@ -24,6 +24,7 @@
 		AF4062522A4497CE0015C9E0 /* APIRepositoriesLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF4062512A4497CE0015C9E0 /* APIRepositoriesLoader.swift */; };
 		AF8ABFCB2A44B92B006F5BD2 /* RepositoriesMapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF8ABFCA2A44B92B006F5BD2 /* RepositoriesMapper.swift */; };
 		AFA12B5C2A4AE68D00FC2E91 /* AsyncImageViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFA12B5B2A4AE68D00FC2E91 /* AsyncImageViewModel.swift */; };
+		AFA12B5F2A4B1FE900FC2E91 /* View+Redacted.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFA12B5E2A4B1FE900FC2E91 /* View+Redacted.swift */; };
 		AFB1E2DF2A45C06D00056D3E /* HTTPClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFB1E2DE2A45C06D00056D3E /* HTTPClient.swift */; };
 		AFB1E2E12A45C2B700056D3E /* URLSessionHTTPClientTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFB1E2E02A45C2B700056D3E /* URLSessionHTTPClientTests.swift */; };
 		AFB54C6E2A49909900C2B784 /* AsyncImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFB54C6D2A49909900C2B784 /* AsyncImageView.swift */; };
@@ -35,7 +36,6 @@
 		AFB54C7D2A49E0C000C2B784 /* HTTPClientSpy.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFB54C7C2A49E0C000C2B784 /* HTTPClientSpy.swift */; };
 		AFB54C7F2A4A0BEE00C2B784 /* RepositoryRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFB54C7E2A4A0BEE00C2B784 /* RepositoryRow.swift */; };
 		AFB54C812A4A164A00C2B784 /* ShimmeringView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFB54C802A4A164A00C2B784 /* ShimmeringView.swift */; };
-		AFB54C832A4A1BB400C2B784 /* LoadingRepositoryRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFB54C822A4A1BB400C2B784 /* LoadingRepositoryRow.swift */; };
 		AFB54C852A4A1D6500C2B784 /* ActivityIndicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFB54C842A4A1D6500C2B784 /* ActivityIndicator.swift */; };
 		AFB54C882A4A2A0100C2B784 /* Lottie in Frameworks */ = {isa = PBXBuildFile; productRef = AFB54C872A4A2A0100C2B784 /* Lottie */; };
 		AFB54C8A2A4A2AAA00C2B784 /* LottieView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFB54C892A4A2AAA00C2B784 /* LottieView.swift */; };
@@ -74,6 +74,7 @@
 		AF4062512A4497CE0015C9E0 /* APIRepositoriesLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIRepositoriesLoader.swift; sourceTree = "<group>"; };
 		AF8ABFCA2A44B92B006F5BD2 /* RepositoriesMapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RepositoriesMapper.swift; sourceTree = "<group>"; };
 		AFA12B5B2A4AE68D00FC2E91 /* AsyncImageViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AsyncImageViewModel.swift; sourceTree = "<group>"; };
+		AFA12B5E2A4B1FE900FC2E91 /* View+Redacted.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+Redacted.swift"; sourceTree = "<group>"; };
 		AFB1E2DE2A45C06D00056D3E /* HTTPClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HTTPClient.swift; sourceTree = "<group>"; };
 		AFB1E2E02A45C2B700056D3E /* URLSessionHTTPClientTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URLSessionHTTPClientTests.swift; sourceTree = "<group>"; };
 		AFB54C6D2A49909900C2B784 /* AsyncImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AsyncImageView.swift; sourceTree = "<group>"; };
@@ -85,7 +86,6 @@
 		AFB54C7C2A49E0C000C2B784 /* HTTPClientSpy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HTTPClientSpy.swift; sourceTree = "<group>"; };
 		AFB54C7E2A4A0BEE00C2B784 /* RepositoryRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RepositoryRow.swift; sourceTree = "<group>"; };
 		AFB54C802A4A164A00C2B784 /* ShimmeringView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShimmeringView.swift; sourceTree = "<group>"; };
-		AFB54C822A4A1BB400C2B784 /* LoadingRepositoryRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingRepositoryRow.swift; sourceTree = "<group>"; };
 		AFB54C842A4A1D6500C2B784 /* ActivityIndicator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityIndicator.swift; sourceTree = "<group>"; };
 		AFB54C892A4A2AAA00C2B784 /* LottieView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LottieView.swift; sourceTree = "<group>"; };
 		AFB54C8B2A4A2B1300C2B784 /* ErrorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorView.swift; sourceTree = "<group>"; };
@@ -259,6 +259,14 @@
 			path = Infrastructure;
 			sourceTree = "<group>";
 		};
+		AFA12B5D2A4B1FD500FC2E91 /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				AFA12B5E2A4B1FE900FC2E91 /* View+Redacted.swift */,
+			);
+			path = Extensions;
+			sourceTree = "<group>";
+		};
 		AFB54C6A2A49903300C2B784 /* Components */ = {
 			isa = PBXGroup;
 			children = (
@@ -266,7 +274,6 @@
 				AFB54C842A4A1D6500C2B784 /* ActivityIndicator.swift */,
 				AFB54C892A4A2AAA00C2B784 /* LottieView.swift */,
 				AFB54C7E2A4A0BEE00C2B784 /* RepositoryRow.swift */,
-				AFB54C822A4A1BB400C2B784 /* LoadingRepositoryRow.swift */,
 				AFB54C802A4A164A00C2B784 /* ShimmeringView.swift */,
 			);
 			path = Components;
@@ -299,6 +306,7 @@
 		AFD774462A45F9C300A94454 /* UI */ = {
 			isa = PBXGroup;
 			children = (
+				AFA12B5D2A4B1FD500FC2E91 /* Extensions */,
 				AFB54C6A2A49903300C2B784 /* Components */,
 				AF11F5F52A447889006B13DC /* RepositoriesView.swift */,
 				AFB54C8B2A4A2B1300C2B784 /* ErrorView.swift */,
@@ -421,8 +429,8 @@
 				AFB54C742A49C04200C2B784 /* HTTPURLResponse+StatusCode.swift in Sources */,
 				AFB54C7B2A49C83900C2B784 /* ImageDataMapper.swift in Sources */,
 				AF3AB1402A45DF4800CD531C /* URLSessionHTTPClient.swift in Sources */,
+				AFA12B5F2A4B1FE900FC2E91 /* View+Redacted.swift in Sources */,
 				AF11F62D2A447C12006B13DC /* AppDelegate.swift in Sources */,
-				AFB54C832A4A1BB400C2B784 /* LoadingRepositoryRow.swift in Sources */,
 				AFB54C812A4A164A00C2B784 /* ShimmeringView.swift in Sources */,
 				AFB54C772A49C80300C2B784 /* ImageDataLoader.swift in Sources */,
 				AFD774452A45F8A100A94454 /* RepositoriesViewModel.swift in Sources */,
