@@ -17,6 +17,7 @@ final class RepositoriesViewModelTests: XCTestCase {
         
         XCTAssertTrue(sut.repositoryItems.isEmpty)
         XCTAssertFalse(sut.isLoading)
+        XCTAssertFalse(sut.isRefreshing)
         XCTAssertNil(sut.error)
     }
     

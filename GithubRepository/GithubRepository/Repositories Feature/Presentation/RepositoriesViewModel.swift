@@ -53,9 +53,5 @@ public class RepositoriesViewModel: ObservableObject {
             self.error = error
         }
     }
-    
-    private func clearData() {
-        repositoryItems = []
-    }
 }
 
