@@ -24,15 +24,6 @@ struct RepositoriesView: View {
                 }
             }
             .navigationBarTitle("Trending", displayMode: .automatic)
-            .navigationBarItems(
-                trailing: HStack {
-                    Button("Update") {
-                        Task {
-                            await viewModel.refresh()
-                        }
-                    }
-                }
-            )
     }
     
     @ViewBuilder
@@ -69,6 +60,15 @@ struct RepositoriesView: View {
                 }
         } else {
             listContent
+                .navigationBarItems(
+                    trailing: HStack {
+                        Button("Update") {
+                            Task {
+                                await viewModel.refresh()
+                            }
+                        }
+                    }
+                )
         }
     }
     
