@@ -25,7 +25,8 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     
     private func makeRepositoriesView() -> RepositoriesView {
         RepositoriesUIComposer.repositoriesComposeWith(
-            repositoriesLoader: apiRepositoriesLoader, imageDataLoader: makeApiImageDataLoader
+            repositoriesLoader: apiRepositoriesLoader,
+            asyncImageViewModel: makeAsyncImageViewModel
         )
     }
     
@@ -39,16 +40,16 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         return APIRepositoriesLoader(client: httpClient, url: url)
     }()
     
-    private func makeApiImageDataLoader() -> ImageDataLoader {
-        APIImageDataLoader(client: httpClient)
+    private func makeAsyncImageViewModel() -> AsyncImageViewModel {
+        AsyncImageViewModel(imageDataLoader: APIImageDataLoader(client: httpClient))
     }
 }
 
 final class RepositoriesUIComposer {
     private init() {}
     
-    static func repositoriesComposeWith(repositoriesLoader: RepositoriesLoader, imageDataLoader: @escaping () -> ImageDataLoader) -> RepositoriesView {
+    static func repositoriesComposeWith(repositoriesLoader: RepositoriesLoader, asyncImageViewModel: @escaping () -> AsyncImageViewModel) -> RepositoriesView {
         let viewModel = RepositoriesViewModel(repositoriesLoader: repositoriesLoader)
-        return RepositoriesView(viewModel: viewModel, imageDataLoader: imageDataLoader)
+        return RepositoriesView(viewModel: viewModel, asyncImageViewModel: asyncImageViewModel)
     }
 }

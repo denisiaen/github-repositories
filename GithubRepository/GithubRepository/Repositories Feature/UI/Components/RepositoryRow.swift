@@ -10,12 +10,12 @@ import SwiftUI
 
 struct RepositoryRow: View {
     private let item: RepositoryItem
-    private let imageDataLoader: () -> ImageDataLoader
+    private let asyncImageViewModel: () -> AsyncImageViewModel
     @Binding public var isLoading: Bool
     
-    init(item: RepositoryItem, imageDataLoader: @escaping () -> ImageDataLoader, isLoading: Binding<Bool>) {
+    init(item: RepositoryItem, asyncImageViewModel: @escaping () -> AsyncImageViewModel, isLoading: Binding<Bool>) {
         self.item = item
-        self.imageDataLoader = imageDataLoader
+        self.asyncImageViewModel = asyncImageViewModel
         self._isLoading = isLoading
     }
     
@@ -45,7 +45,7 @@ struct RepositoryRow: View {
 //        if #available(iOS 15.0, *) {
 //            makeAsyncImage(url)
 //        } else {
-            AsyncImageView(url: url, imageDataLoader: imageDataLoader(), placeholder: placeholder)
+            AsyncImageView(url: url, viewModel: asyncImageViewModel(), placeholder: placeholder)
 //        }
     }
     

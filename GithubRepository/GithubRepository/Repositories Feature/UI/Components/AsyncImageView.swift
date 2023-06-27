@@ -9,11 +9,13 @@ import SwiftUI
 
 struct AsyncImageView<Placeholder: View>: View {
     private let placeholder: Placeholder
+    private let url: URL
     
     @ObservedObject var viewModel: AsyncImageViewModel
     
-    init(url: URL, imageDataLoader: ImageDataLoader, placeholder: Placeholder) {
-        self.viewModel = AsyncImageViewModel(imageDataLoader: imageDataLoader, url: url)
+    init(url: URL, viewModel: AsyncImageViewModel, placeholder: Placeholder) {
+        self.url = url
+        self.viewModel = viewModel
         self.placeholder = placeholder
     }
 
@@ -21,7 +23,7 @@ struct AsyncImageView<Placeholder: View>: View {
         content
             .onAppear {
                 Task {
-                    await viewModel.viewDidAppear()
+                    await viewModel.load(url: url)
                 }
             }
     }
@@ -41,18 +43,16 @@ struct AsyncImageView<Placeholder: View>: View {
 
 class AsyncImageViewModel: ObservableObject {
     let imageDataLoader: ImageDataLoader
-    let url: URL
 
     @Published public var data: Data?
     @Published public var error: Error?
 
-    init(imageDataLoader: ImageDataLoader, url: URL) {
+    init(imageDataLoader: ImageDataLoader) {
         self.imageDataLoader = imageDataLoader
-        self.url = url
     }
 
     @MainActor
-    func viewDidAppear() async {
+    func load(url: URL) async {
         do {
             data = try await imageDataLoader.load(url: url)
         } catch {

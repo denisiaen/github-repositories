@@ -8,12 +8,12 @@
 import SwiftUI
 
 struct RepositoriesView: View {
-    private let imageDataLoader: () -> ImageDataLoader
+    private let asyncImageViewModel: () -> AsyncImageViewModel
     @ObservedObject var viewModel: RepositoriesViewModel
     
-    init(viewModel: RepositoriesViewModel, imageDataLoader: @escaping () -> ImageDataLoader) {
+    init(viewModel: RepositoriesViewModel, asyncImageViewModel: @escaping () -> AsyncImageViewModel) {
         self.viewModel = viewModel
-        self.imageDataLoader = imageDataLoader
+        self.asyncImageViewModel = asyncImageViewModel
     }
     
     var body: some View {
@@ -68,7 +68,7 @@ struct RepositoriesView: View {
         List {
             ForEach(viewModel.repositoryItems.indices, id: \.self) { index in
                 let item = viewModel.repositoryItems[index]
-                RepositoryRow(item: item, imageDataLoader: imageDataLoader, isLoading: $viewModel.isRefreshing)
+                RepositoryRow(item: item, asyncImageViewModel: asyncImageViewModel, isLoading: $viewModel.isRefreshing)
                     .padding()
             }
         }
@@ -78,8 +78,8 @@ struct RepositoriesView: View {
 
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
-        RepositoriesView(viewModel: RepositoriesViewModel.makeDummy(), imageDataLoader: {
-            DummyImageDataLoader()
+        RepositoriesView(viewModel: RepositoriesViewModel.makeDummy(), asyncImageViewModel: {
+            AsyncImageViewModel(imageDataLoader: DummyImageDataLoader())
         })
     }
 }
