@@ -40,23 +40,3 @@ struct AsyncImageView<Placeholder: View>: View {
         }
     }
 }
-
-class AsyncImageViewModel: ObservableObject {
-    let imageDataLoader: ImageDataLoader
-
-    @Published public var data: Data?
-    @Published public var error: Error?
-
-    init(imageDataLoader: ImageDataLoader) {
-        self.imageDataLoader = imageDataLoader
-    }
-
-    @MainActor
-    func load(url: URL) async {
-        do {
-            data = try await imageDataLoader.load(url: url)
-        } catch {
-            self.error = error
-        }
-    }
-}
