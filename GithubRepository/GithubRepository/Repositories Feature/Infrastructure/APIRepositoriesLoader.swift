@@ -21,7 +21,7 @@ public class APIRepositoriesLoader: RepositoriesLoader {
         self.url = url
     }
     
-    public func load() async throws -> [RepositoryItem] {
+    public func load() async throws -> [RepositoryItem] {        
         guard let (data, response) = try? await client.get(from: url) else {
             throw Error.connectivity
         }

@@ -36,6 +36,10 @@
 		AFB54C812A4A164A00C2B784 /* ShimmeringView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFB54C802A4A164A00C2B784 /* ShimmeringView.swift */; };
 		AFB54C832A4A1BB400C2B784 /* LoadingRepositoryRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFB54C822A4A1BB400C2B784 /* LoadingRepositoryRow.swift */; };
 		AFB54C852A4A1D6500C2B784 /* ActivityIndicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFB54C842A4A1D6500C2B784 /* ActivityIndicator.swift */; };
+		AFB54C882A4A2A0100C2B784 /* Lottie in Frameworks */ = {isa = PBXBuildFile; productRef = AFB54C872A4A2A0100C2B784 /* Lottie */; };
+		AFB54C8A2A4A2AAA00C2B784 /* LottieView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFB54C892A4A2AAA00C2B784 /* LottieView.swift */; };
+		AFB54C8C2A4A2B1300C2B784 /* ErrorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFB54C8B2A4A2B1300C2B784 /* ErrorView.swift */; };
+		AFB54C902A4A2CE800C2B784 /* retry-and-user-busy-version-2.json in Resources */ = {isa = PBXBuildFile; fileRef = AFB54C8F2A4A2CE800C2B784 /* retry-and-user-busy-version-2.json */; };
 		AFD774452A45F8A100A94454 /* RepositoriesViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFD774442A45F8A100A94454 /* RepositoriesViewModel.swift */; };
 /* End PBXBuildFile section */
 
@@ -81,6 +85,9 @@
 		AFB54C802A4A164A00C2B784 /* ShimmeringView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShimmeringView.swift; sourceTree = "<group>"; };
 		AFB54C822A4A1BB400C2B784 /* LoadingRepositoryRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingRepositoryRow.swift; sourceTree = "<group>"; };
 		AFB54C842A4A1D6500C2B784 /* ActivityIndicator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityIndicator.swift; sourceTree = "<group>"; };
+		AFB54C892A4A2AAA00C2B784 /* LottieView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LottieView.swift; sourceTree = "<group>"; };
+		AFB54C8B2A4A2B1300C2B784 /* ErrorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorView.swift; sourceTree = "<group>"; };
+		AFB54C8F2A4A2CE800C2B784 /* retry-and-user-busy-version-2.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "retry-and-user-busy-version-2.json"; sourceTree = "<group>"; };
 		AFD774442A45F8A100A94454 /* RepositoriesViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RepositoriesViewModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -89,6 +96,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				AFB54C882A4A2A0100C2B784 /* Lottie in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -158,6 +166,7 @@
 				AF3AB1432A45E03A00CD531C /* Infrastructure */,
 				AF3AB14B2A45E3EE00CD531C /* Presentation */,
 				AFD774462A45F9C300A94454 /* UI */,
+				AFB54C8D2A4A2BD800C2B784 /* Resources */,
 			);
 			path = "Repositories Feature";
 			sourceTree = "<group>";
@@ -252,6 +261,7 @@
 			children = (
 				AFB54C6D2A49909900C2B784 /* AsyncImageView.swift */,
 				AFB54C842A4A1D6500C2B784 /* ActivityIndicator.swift */,
+				AFB54C892A4A2AAA00C2B784 /* LottieView.swift */,
 				AFB54C7E2A4A0BEE00C2B784 /* RepositoryRow.swift */,
 				AFB54C822A4A1BB400C2B784 /* LoadingRepositoryRow.swift */,
 				AFB54C802A4A164A00C2B784 /* ShimmeringView.swift */,
@@ -267,11 +277,28 @@
 			path = Helpers;
 			sourceTree = "<group>";
 		};
+		AFB54C8D2A4A2BD800C2B784 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				AFB54C8E2A4A2BE300C2B784 /* LottieAnimations */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
+		AFB54C8E2A4A2BE300C2B784 /* LottieAnimations */ = {
+			isa = PBXGroup;
+			children = (
+				AFB54C8F2A4A2CE800C2B784 /* retry-and-user-busy-version-2.json */,
+			);
+			path = LottieAnimations;
+			sourceTree = "<group>";
+		};
 		AFD774462A45F9C300A94454 /* UI */ = {
 			isa = PBXGroup;
 			children = (
 				AFB54C6A2A49903300C2B784 /* Components */,
 				AF11F5F52A447889006B13DC /* RepositoriesView.swift */,
+				AFB54C8B2A4A2B1300C2B784 /* ErrorView.swift */,
 			);
 			path = UI;
 			sourceTree = "<group>";
@@ -292,6 +319,9 @@
 			dependencies = (
 			);
 			name = GithubRepository;
+			packageProductDependencies = (
+				AFB54C872A4A2A0100C2B784 /* Lottie */,
+			);
 			productName = GithubRepository;
 			productReference = AF11F5F02A447889006B13DC /* GithubRepository.app */;
 			productType = "com.apple.product-type.application";
@@ -343,6 +373,9 @@
 				Base,
 			);
 			mainGroup = AF11F5E72A447888006B13DC;
+			packageReferences = (
+				AFB54C862A4A2A0100C2B784 /* XCRemoteSwiftPackageReference "lottie-spm" */,
+			);
 			productRefGroup = AF11F5F12A447889006B13DC /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -360,6 +393,7 @@
 			files = (
 				AF4062502A4493130015C9E0 /* LaunchScreen.storyboard in Resources */,
 				AF11F5FB2A44788A006B13DC /* Preview Assets.xcassets in Resources */,
+				AFB54C902A4A2CE800C2B784 /* retry-and-user-busy-version-2.json in Resources */,
 				AF11F5F82A44788A006B13DC /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -389,6 +423,7 @@
 				AFB54C812A4A164A00C2B784 /* ShimmeringView.swift in Sources */,
 				AFB54C772A49C80300C2B784 /* ImageDataLoader.swift in Sources */,
 				AFD774452A45F8A100A94454 /* RepositoriesViewModel.swift in Sources */,
+				AFB54C8A2A4A2AAA00C2B784 /* LottieView.swift in Sources */,
 				AF4062522A4497CE0015C9E0 /* APIRepositoriesLoader.swift in Sources */,
 				AFB1E2DF2A45C06D00056D3E /* HTTPClient.swift in Sources */,
 				AF11F6332A448BCA006B13DC /* RepositoriesLoader.swift in Sources */,
@@ -398,6 +433,7 @@
 				AFB54C7F2A4A0BEE00C2B784 /* RepositoryRow.swift in Sources */,
 				AF11F5F42A447889006B13DC /* SceneDelegate.swift in Sources */,
 				AF8ABFCB2A44B92B006F5BD2 /* RepositoriesMapper.swift in Sources */,
+				AFB54C8C2A4A2B1300C2B784 /* ErrorView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -676,6 +712,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		AFB54C862A4A2A0100C2B784 /* XCRemoteSwiftPackageReference "lottie-spm" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/airbnb/lottie-spm.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 4.2.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		AFB54C872A4A2A0100C2B784 /* Lottie */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = AFB54C862A4A2A0100C2B784 /* XCRemoteSwiftPackageReference "lottie-spm" */;
+			productName = Lottie;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = AF11F5E82A447888006B13DC /* Project object */;
 }

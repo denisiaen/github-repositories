@@ -26,7 +26,7 @@ struct RepositoriesView: View {
             .navigationBarTitle("Trending", displayMode: .automatic)
             .navigationBarItems(
                 trailing: HStack {
-                    Button("Reload") {
+                    Button("Update") {
                         Task {
                             await viewModel.refresh()
                         }
@@ -39,6 +39,12 @@ struct RepositoriesView: View {
     private var loadingList: some View {
         if viewModel.isLoading {
             ActivityIndicator()
+        } else if let _ = viewModel.error {
+            ErrorView(animationName: "retry-and-user-busy-version-2", action: {
+                Task {
+                    await viewModel.refresh()
+                }
+            })
         } else {
             refreshableList
         }
