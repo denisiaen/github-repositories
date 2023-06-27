@@ -42,7 +42,7 @@ struct RepositoriesView: View {
         } else if let _ = viewModel.error {
             ErrorView(animationName: "retry-and-user-busy-version-2", action: {
                 Task {
-                    await viewModel.refresh()
+                    await viewModel.viewDidAppear()
                 }
             })
         } else {

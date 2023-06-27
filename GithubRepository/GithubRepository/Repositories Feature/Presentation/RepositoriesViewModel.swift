@@ -49,6 +49,7 @@ public class RepositoriesViewModel: ObservableObject {
     private func load() async {
         do {
             repositoryItems = try await repositoriesLoader.load()
+            self.error = nil
         } catch {
             self.error = error
         }
