@@ -8,18 +8,18 @@
 import Foundation
 import SwiftUI
 
-struct RepositoryRow: View {
+public struct RepositoryRow: View {
     private let item: RepositoryItem
     private let asyncImageViewModel: () -> AsyncImageViewModel
     @Binding public var isLoading: Bool
     
-    init(item: RepositoryItem, asyncImageViewModel: @escaping () -> AsyncImageViewModel, isLoading: Binding<Bool>) {
+    public init(item: RepositoryItem, asyncImageViewModel: @escaping () -> AsyncImageViewModel, isLoading: Binding<Bool>) {
         self.item = item
         self.asyncImageViewModel = asyncImageViewModel
         self._isLoading = isLoading
     }
     
-    var body: some View {
+    public var body: some View {
         makeItemView(item: item)
             .shimmer(isLoading)
     }

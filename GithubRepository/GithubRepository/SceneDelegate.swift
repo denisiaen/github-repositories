@@ -50,6 +50,14 @@ final class RepositoriesUIComposer {
     
     static func repositoriesComposeWith(repositoriesLoader: RepositoriesLoader, asyncImageViewModel: @escaping () -> AsyncImageViewModel) -> RepositoriesView {
         let viewModel = RepositoriesViewModel(repositoriesLoader: repositoriesLoader)
-        return RepositoriesView(viewModel: viewModel, asyncImageViewModel: asyncImageViewModel)
+        let view = RepositoriesView(viewModel: viewModel) { item in
+            RepositoryRow(item: item, asyncImageViewModel: asyncImageViewModel, isLoading: isLoadingBinded(viewModel: viewModel))
+        }
+        
+        return view
+    }
+    
+    static func isLoadingBinded(viewModel: RepositoriesViewModel) -> Binding<Bool> {
+        Binding<Bool>(get: { viewModel.isRefreshing }, set: { viewModel.isRefreshing = $0 })
     }
 }
