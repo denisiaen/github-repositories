@@ -7,18 +7,18 @@
 
 import Foundation
 
-class AsyncImageViewModel: ObservableObject {
+public class AsyncImageViewModel: ObservableObject {
     let imageDataLoader: ImageDataLoader
 
     @Published public var data: Data?
     @Published public var error: Error?
 
-    init(imageDataLoader: ImageDataLoader) {
+    public init(imageDataLoader: ImageDataLoader) {
         self.imageDataLoader = imageDataLoader
     }
 
     @MainActor
-    func load(url: URL) async {
+    public func load(url: URL) async {
         do {
             data = try await imageDataLoader.load(url: url)
         } catch {

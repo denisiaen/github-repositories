@@ -7,16 +7,16 @@
 
 import SwiftUI
 
-struct RepositoriesView: View {
+public struct RepositoriesView: View {
     private let asyncImageViewModel: () -> AsyncImageViewModel
     @ObservedObject var viewModel: RepositoriesViewModel
     
-    init(viewModel: RepositoriesViewModel, asyncImageViewModel: @escaping () -> AsyncImageViewModel) {
+    public init(viewModel: RepositoriesViewModel, asyncImageViewModel: @escaping () -> AsyncImageViewModel) {
         self.viewModel = viewModel
         self.asyncImageViewModel = asyncImageViewModel
     }
     
-    var body: some View {
+    public var body: some View {
         loadingList
             .onAppear {
                 Task {

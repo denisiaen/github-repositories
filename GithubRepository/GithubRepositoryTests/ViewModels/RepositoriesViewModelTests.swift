@@ -76,6 +76,51 @@ final class RepositoriesViewModelTests: XCTestCase {
         await fulfillment(of: [exp], timeout: 1.0)
     }
     
+    func test_refresh_startsAndStopsRefreshingOnRepositoriesLoadError() async {
+        let (sut, _) = makeSUT(repositoriesLoaderResult: .failure(anyNSError()))
+        
+        var isRefreshingStates = [Bool]()
+        let cancellable = sut.$isRefreshing.sink {
+            isRefreshingStates.append($0)
+        }
+        
+        XCTAssertEqual(isRefreshingStates, [false])
+        
+        await sut.refresh()
+        
+        XCTAssertEqual(isRefreshingStates, [false, true, false])
+        
+        cancellable.cancel()
+    }
+    
+    func test_refresh_startsAndStopsRefreshingOnRepositoriesLoadSuccess() async {
+        let (sut, _) = makeSUT(repositoriesLoaderResult: .success([anyRepositoryItem()]))
+        
+        var isRefreshingStates = [Bool]()
+        let cancellable = sut.$isRefreshing.sink {
+            isRefreshingStates.append($0)
+        }
+        
+        XCTAssertEqual(isRefreshingStates, [false])
+        
+        await sut.refresh()
+        
+        XCTAssertEqual(isRefreshingStates, [false, true, false])
+        
+        cancellable.cancel()
+    }
+    
+    func test_refresh_deliversResultOnRepositoriesLoadSuccess() async {
+        let item1 = RepositoryItem(id: 1, userName: "A name", imageURL: URL(string: "http://url")!, repositoryName: "A repo", description: nil, language: nil, stars: nil)
+        let item2 = RepositoryItem(id: 2, userName: "Another name", imageURL: URL(string: "http://another-url")!, repositoryName: "Another repo", description: "A description", language: "A language", stars: 2)
+        
+        let (sut, _) = makeSUT(repositoriesLoaderResult: .success([item1, item2]))
+        
+        await sut.refresh()
+        
+        XCTAssertEqual(sut.repositoryItems, [item1, item2])
+    }
+    
     // MARK: - Helpers
     
     private func makeSUT(
@@ -86,24 +131,5 @@ final class RepositoriesViewModelTests: XCTestCase {
         trackForMemoryLeaks(sut, file: file, line: line)
         trackForMemoryLeaks(repositoriesLoaderStub, file: file, line: line)
         return (sut, repositoriesLoaderStub)
-    }
-}
-
-private func anyRepositoryItem() -> RepositoryItem {
-    RepositoryItem(id: 1, userName: "A name", imageURL: URL(string: "http://url")!, repositoryName: "A repo", description: nil, language: nil, stars: nil)
-}
-
-private class RepositoriesLoaderStub: RepositoriesLoader {
-    var invokedLoadCount = 0
-    
-    private var result: Result<[RepositoryItem], Error>
-    
-    init(result: Result<[RepositoryItem], Error>) {
-        self.result = result
-    }
-    
-    func load() async throws -> [RepositoryItem] {
-        invokedLoadCount += 1
-        return try result.get()
     }
 }
