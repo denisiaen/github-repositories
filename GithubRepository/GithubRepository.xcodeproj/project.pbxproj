@@ -44,6 +44,7 @@
 		AFCEA8612A570C4100392728 /* RepositoriesLoaderStub.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFCEA8602A570C4100392728 /* RepositoriesLoaderStub.swift */; };
 		AFCEA8632A570CF200392728 /* RepositoryItem+Mock.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFCEA8622A570CF200392728 /* RepositoryItem+Mock.swift */; };
 		AFD774452A45F8A100A94454 /* RepositoriesViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFD774442A45F8A100A94454 /* RepositoriesViewModel.swift */; };
+		AFDFB8582A571DC400EB94C4 /* AsyncImageViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFDFB8572A571DC400EB94C4 /* AsyncImageViewModelTests.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -96,6 +97,7 @@
 		AFCEA8602A570C4100392728 /* RepositoriesLoaderStub.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RepositoriesLoaderStub.swift; sourceTree = "<group>"; };
 		AFCEA8622A570CF200392728 /* RepositoryItem+Mock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "RepositoryItem+Mock.swift"; sourceTree = "<group>"; };
 		AFD774442A45F8A100A94454 /* RepositoriesViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RepositoriesViewModel.swift; sourceTree = "<group>"; };
+		AFDFB8572A571DC400EB94C4 /* AsyncImageViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AsyncImageViewModelTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -253,6 +255,7 @@
 			isa = PBXGroup;
 			children = (
 				AF3AB14D2A45E43D00CD531C /* RepositoriesViewModelTests.swift */,
+				AFDFB8572A571DC400EB94C4 /* AsyncImageViewModelTests.swift */,
 			);
 			path = ViewModels;
 			sourceTree = "<group>";
@@ -464,6 +467,7 @@
 				AF11F6382A4490C5006B13DC /* APIRepositoriesLoaderTests.swift in Sources */,
 				AFB54C702A49B2C000C2B784 /* APIImageDataLoaderTests.swift in Sources */,
 				AFCEA8632A570CF200392728 /* RepositoryItem+Mock.swift in Sources */,
+				AFDFB8582A571DC400EB94C4 /* AsyncImageViewModelTests.swift in Sources */,
 				AFB1E2E12A45C2B700056D3E /* URLSessionHTTPClientTests.swift in Sources */,
 				AF3AB14E2A45E43D00CD531C /* RepositoriesViewModelTests.swift in Sources */,
 				AF3AB1482A45E19900CD531C /* XCTestCase+MemoryLeakTracking.swift in Sources */,
