@@ -11,9 +11,9 @@ struct AsyncImageView<Placeholder: View>: View {
     private let placeholder: Placeholder
     private let url: URL
     
-    @ObservedObject var viewModel: AsyncImageViewModel
+    @ObservedObject var viewModel: AsyncImageViewModel<UIImage>
     
-    init(url: URL, viewModel: AsyncImageViewModel, placeholder: Placeholder) {
+    init(url: URL, viewModel: AsyncImageViewModel<UIImage>, placeholder: Placeholder) {
         self.url = url
         self.viewModel = viewModel
         self.placeholder = placeholder
@@ -30,7 +30,7 @@ struct AsyncImageView<Placeholder: View>: View {
     
     private var content: some View {
         VStack {
-            if let imageData = viewModel.data, let uiImage = UIImage(data: imageData) {
+            if let uiImage = viewModel.image {
                 Image(uiImage: uiImage)
                     .resizable()
                     .aspectRatio(contentMode: .fit)

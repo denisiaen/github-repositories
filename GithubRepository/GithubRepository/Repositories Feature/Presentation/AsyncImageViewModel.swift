@@ -7,20 +7,23 @@
 
 import Foundation
 
-public class AsyncImageViewModel: ObservableObject {
+public class AsyncImageViewModel<Image>: ObservableObject {
     let imageDataLoader: ImageDataLoader
+    let imageTransformer: (Data) -> Image?
 
-    @Published public var data: Data?
+    @Published public var image: Image?
     @Published public var error: Error?
 
-    public init(imageDataLoader: ImageDataLoader) {
+    public init(imageDataLoader: ImageDataLoader, imageTransformer: @escaping (Data) -> Image?) {
         self.imageDataLoader = imageDataLoader
+        self.imageTransformer = imageTransformer
     }
 
     @MainActor
     public func load(url: URL) async {
         do {
-            data = try await imageDataLoader.load(url: url)
+            let data = try await imageDataLoader.load(url: url)
+            image = imageTransformer(data)
         } catch {
             self.error = error
         }

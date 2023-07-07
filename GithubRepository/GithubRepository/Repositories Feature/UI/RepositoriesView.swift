@@ -88,7 +88,7 @@ struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
         RepositoriesView(viewModel: .makeDummy()) { item in
             RepositoryRow(item: .init(id: 123, userName: "a name", imageURL: URL(string: "any-url")!, repositoryName: "repo name", description: nil, language: nil, stars: nil), asyncImageViewModel: {
-                AsyncImageViewModel(imageDataLoader: DummyImageDataLoader())
+                AsyncImageViewModel(imageDataLoader: DummyImageDataLoader(), imageTransformer: UIImage.init)
             }, isLoading: .constant(false))
         }
     }

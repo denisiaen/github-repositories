@@ -10,10 +10,10 @@ import SwiftUI
 
 public struct RepositoryRow: View {
     private let item: RepositoryItem
-    private let asyncImageViewModel: () -> AsyncImageViewModel
+    private let asyncImageViewModel: () -> AsyncImageViewModel<UIImage>
     @Binding public var isLoading: Bool
     
-    public init(item: RepositoryItem, asyncImageViewModel: @escaping () -> AsyncImageViewModel, isLoading: Binding<Bool>) {
+    public init(item: RepositoryItem, asyncImageViewModel: @escaping () -> AsyncImageViewModel<UIImage>, isLoading: Binding<Bool>) {
         self.item = item
         self.asyncImageViewModel = asyncImageViewModel
         self._isLoading = isLoading

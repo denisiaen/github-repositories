@@ -40,15 +40,15 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         return APIRepositoriesLoader(client: httpClient, url: url)
     }()
     
-    private func makeAsyncImageViewModel() -> AsyncImageViewModel {
-        AsyncImageViewModel(imageDataLoader: APIImageDataLoader(client: httpClient))
+    private func makeAsyncImageViewModel() -> AsyncImageViewModel<UIImage> {
+        AsyncImageViewModel(imageDataLoader: APIImageDataLoader(client: httpClient), imageTransformer: UIImage.init)
     }
 }
 
 final class RepositoriesUIComposer {
     private init() {}
     
-    static func repositoriesComposeWith(repositoriesLoader: RepositoriesLoader, asyncImageViewModel: @escaping () -> AsyncImageViewModel) -> RepositoriesView {
+    static func repositoriesComposeWith(repositoriesLoader: RepositoriesLoader, asyncImageViewModel: @escaping () -> AsyncImageViewModel<UIImage>) -> RepositoriesView {
         let viewModel = RepositoriesViewModel(repositoriesLoader: repositoriesLoader)
         let view = RepositoriesView(viewModel: viewModel) { item in
             RepositoryRow(item: item, asyncImageViewModel: asyncImageViewModel, isLoading: isLoadingBinded(viewModel: viewModel))
