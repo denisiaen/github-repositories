@@ -6,7 +6,6 @@
 //
 
 import SwiftUI
-import UIKit
 
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     
@@ -24,9 +23,10 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     private lazy var navigationController = UINavigationController(rootViewController: UIHostingController(rootView:  makeRepositoriesView()))
     
     private func makeRepositoriesView() -> RepositoriesView {
-        RepositoriesUIComposer.repositoriesComposeWith(
+        let httpClient = self.httpClient
+        return RepositoriesUIComposer.repositoriesComposeWith(
             repositoriesLoader: apiRepositoriesLoader,
-            asyncImageViewModel: makeAsyncImageViewModel
+            imageDataLoader: { APIImageDataLoader(client: httpClient) }
         )
     }
     
@@ -40,24 +40,5 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         return APIRepositoriesLoader(client: httpClient, url: url)
     }()
     
-    private func makeAsyncImageViewModel() -> AsyncImageViewModel<UIImage> {
-        AsyncImageViewModel(imageDataLoader: APIImageDataLoader(client: httpClient), imageTransformer: UIImage.init)
-    }
-}
-
-final class RepositoriesUIComposer {
-    private init() {}
     
-    static func repositoriesComposeWith(repositoriesLoader: RepositoriesLoader, asyncImageViewModel: @escaping () -> AsyncImageViewModel<UIImage>) -> RepositoriesView {
-        let viewModel = RepositoriesViewModel(repositoriesLoader: repositoriesLoader)
-        let view = RepositoriesView(viewModel: viewModel) { item in
-            RepositoryRow(item: item, asyncImageViewModel: asyncImageViewModel, isLoading: isLoadingBinded(viewModel: viewModel))
-        }
-        
-        return view
-    }
-    
-    static func isLoadingBinded(viewModel: RepositoriesViewModel) -> Binding<Bool> {
-        Binding<Bool>(get: { viewModel.isRefreshing }, set: { viewModel.isRefreshing = $0 })
-    }
 }
