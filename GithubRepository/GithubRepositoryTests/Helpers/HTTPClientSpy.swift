@@ -9,7 +9,7 @@ import GithubRepository
 import Foundation
 
 class HTTPClientSpy: HTTPClient {
-    private(set) var requests = [Request]()
+    private(set) var requests = [HTTPRequest]()
     
     let result: Result<(Data, HTTPURLResponse), Error>
     
@@ -17,7 +17,7 @@ class HTTPClientSpy: HTTPClient {
         self.result = result
     }
     
-    func get(from request: Request) async throws -> HTTPResponse {
+    func get(from request: HTTPRequest) async throws -> HTTPResponse {
         requests.append(request)
         return try result.get()
     }

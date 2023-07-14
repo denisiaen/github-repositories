@@ -22,6 +22,7 @@
 		AF3AB14E2A45E43D00CD531C /* RepositoriesViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF3AB14D2A45E43D00CD531C /* RepositoriesViewModelTests.swift */; };
 		AF4062502A4493130015C9E0 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = AF40624F2A4493130015C9E0 /* LaunchScreen.storyboard */; };
 		AF4062522A4497CE0015C9E0 /* APIRepositoriesLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF4062512A4497CE0015C9E0 /* APIRepositoriesLoader.swift */; };
+		AF6313EA2A61447B001F4DF2 /* AuthenticatedHTTPClientDecoratorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF6313E92A61447B001F4DF2 /* AuthenticatedHTTPClientDecoratorTests.swift */; };
 		AF8ABFCB2A44B92B006F5BD2 /* RepositoriesMapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF8ABFCA2A44B92B006F5BD2 /* RepositoriesMapper.swift */; };
 		AFA12B5C2A4AE68D00FC2E91 /* AsyncImageViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFA12B5B2A4AE68D00FC2E91 /* AsyncImageViewModel.swift */; };
 		AFA12B5F2A4B1FE900FC2E91 /* View+Redacted.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFA12B5E2A4B1FE900FC2E91 /* View+Redacted.swift */; };
@@ -76,6 +77,7 @@
 		AF3AB14D2A45E43D00CD531C /* RepositoriesViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RepositoriesViewModelTests.swift; sourceTree = "<group>"; };
 		AF40624F2A4493130015C9E0 /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = LaunchScreen.storyboard; sourceTree = "<group>"; };
 		AF4062512A4497CE0015C9E0 /* APIRepositoriesLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIRepositoriesLoader.swift; sourceTree = "<group>"; };
+		AF6313E92A61447B001F4DF2 /* AuthenticatedHTTPClientDecoratorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthenticatedHTTPClientDecoratorTests.swift; sourceTree = "<group>"; };
 		AF8ABFCA2A44B92B006F5BD2 /* RepositoriesMapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RepositoriesMapper.swift; sourceTree = "<group>"; };
 		AFA12B5B2A4AE68D00FC2E91 /* AsyncImageViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AsyncImageViewModel.swift; sourceTree = "<group>"; };
 		AFA12B5E2A4B1FE900FC2E91 /* View+Redacted.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+Redacted.swift"; sourceTree = "<group>"; };
@@ -268,6 +270,7 @@
 				AF11F6372A4490C5006B13DC /* APIRepositoriesLoaderTests.swift */,
 				AFB54C6F2A49B2C000C2B784 /* APIImageDataLoaderTests.swift */,
 				AFB1E2E02A45C2B700056D3E /* URLSessionHTTPClientTests.swift */,
+				AF6313E92A61447B001F4DF2 /* AuthenticatedHTTPClientDecoratorTests.swift */,
 			);
 			path = Infrastructure;
 			sourceTree = "<group>";
@@ -491,6 +494,7 @@
 				AFB1E2E12A45C2B700056D3E /* URLSessionHTTPClientTests.swift in Sources */,
 				AF3AB14E2A45E43D00CD531C /* RepositoriesViewModelTests.swift in Sources */,
 				AF3AB1482A45E19900CD531C /* XCTestCase+MemoryLeakTracking.swift in Sources */,
+				AF6313EA2A61447B001F4DF2 /* AuthenticatedHTTPClientDecoratorTests.swift in Sources */,
 				AFCEA8612A570C4100392728 /* RepositoriesLoaderStub.swift in Sources */,
 				AFB54C7D2A49E0C000C2B784 /* HTTPClientSpy.swift in Sources */,
 				AF3AB14A2A45E2AB00CD531C /* TestHelpers.swift in Sources */,
