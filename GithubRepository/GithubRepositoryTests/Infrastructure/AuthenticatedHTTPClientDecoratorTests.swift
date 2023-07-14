@@ -49,6 +49,18 @@ final class AuthenticatedHTTPClientDecoratorTests: XCTestCase {
         XCTAssertEqual(client.requests, [signedRequest])
     }
     
+    func test_getRequest_withSuccessfulTokenRequest_completesWithDecorateeResult() async throws {
+        let values = (anyData(), anyValidHTTPResponse())
+        let client = HTTPClientSpy(result: .success(values))
+        let service = TokenServiceSpy(.success("any token"))
+        let sut = AuthenticatedHTTPClientDecorator(decoratee: client, service: service)
+        
+        let receivedValues = try await sut.get(from: makeTestRequest())
+        
+        XCTAssertEqual(receivedValues.0, values.0)
+        XCTAssertEqual(receivedValues.1, values.1)
+    }
+    
     func test_sendRequest_withFailedTokenRequests_Fails() async throws {
         let client = HTTPClientSpy()
         let service = TokenServiceSpy(.failure(anyNSError()))
