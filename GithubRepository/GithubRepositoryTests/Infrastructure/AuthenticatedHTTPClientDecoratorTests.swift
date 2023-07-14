@@ -12,16 +12,24 @@ class AuthenticatedHTTPClientDecorator: HTTPClient {
     private let decoratee: HTTPClient
     private let service: TokenService
     
+    public enum Error: Swift.Error {
+        case failedToAuthenticate
+    }
+    
     init(decoratee: HTTPClient, service: TokenService) {
         self.decoratee = decoratee
         self.service = service
     }
     
     func get(from request: HTTPRequest) async throws -> HTTPResponse {
-        let token = try await service.getToken()
-        var signedRequest = request
-        signedRequest.header = ["token": token]
-        return try await decoratee.get(from: signedRequest)
+        do {
+            let token = try await service.getToken()
+            var signedRequest = request
+            signedRequest.header = ["token": token]
+            return try await decoratee.get(from: signedRequest)
+        } catch {
+            throw Error.failedToAuthenticate
+        }
     }
 }
 
@@ -39,6 +47,21 @@ final class AuthenticatedHTTPClientDecoratorTests: XCTestCase {
         _ = try await sut.get(from: unsignedRequest)
         
         XCTAssertEqual(client.requests, [signedRequest])
+    }
+    
+    func test_sendRequest_withFailedTokenRequests_Fails() async throws {
+        let client = HTTPClientSpy()
+        let service = TokenServiceSpy(.failure(anyNSError()))
+        
+        let sut = AuthenticatedHTTPClientDecorator(decoratee: client, service: service)
+        
+        do {
+            _ = try await sut.get(from: makeTestRequest())
+            XCTFail("Expected error, got success instead")
+        } catch {
+            XCTAssertEqual(client.requests, [])
+            XCTAssertEqual(error as? AuthenticatedHTTPClientDecorator.Error, .failedToAuthenticate)
+        }
     }
 
     // MARK: - Helpers
