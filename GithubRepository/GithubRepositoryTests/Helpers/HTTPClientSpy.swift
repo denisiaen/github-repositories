@@ -9,16 +9,16 @@ import GithubRepository
 import Foundation
 
 class HTTPClientSpy: HTTPClient {
-    private(set) var requestedURLs = [URL]()
+    private(set) var requests = [Request]()
     
     let result: Result<(Data, HTTPURLResponse), Error>
     
-    init(result: Result<(Data, HTTPURLResponse), Error>) {
+    init(result: Result<(Data, HTTPURLResponse), Error> = .success((anyData(), anyValidHTTPResponse()))) {
         self.result = result
     }
     
-    func get(from url: URL) async throws -> (Data, HTTPURLResponse) {
-        requestedURLs.append(url)
+    func get(from request: Request) async throws -> HTTPResponse {
+        requests.append(request)
         return try result.get()
     }
 }

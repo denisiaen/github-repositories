@@ -13,7 +13,7 @@ final class APIRepositoriesLoaderTests: XCTestCase {
     func test_init_doesNotRequestDataFromURL() {
         let (_, client) = makeSUT()
         
-        XCTAssertTrue(client.requestedURLs.isEmpty)
+        XCTAssertTrue(client.requests.isEmpty)
     }
 
     func test_load_requestsDataFromURL() async throws {
@@ -22,7 +22,7 @@ final class APIRepositoriesLoaderTests: XCTestCase {
 
         _ = try await sut.load()
 
-        XCTAssertEqual(client.requestedURLs, [url])
+        XCTAssertEqual(client.requests.map{ $0.url }, [url])
     }
 
     func test_loadTwice_requestsDataFromURLTwice() async throws {
@@ -32,7 +32,7 @@ final class APIRepositoriesLoaderTests: XCTestCase {
         _ = try await sut.load()
         _ = try await sut.load()
         
-        XCTAssertEqual(client.requestedURLs, [url, url])
+        XCTAssertEqual(client.requests.map{ $0.url }, [url, url])
     }
     
     func test_load_deliversErrorOnClientError() async throws {

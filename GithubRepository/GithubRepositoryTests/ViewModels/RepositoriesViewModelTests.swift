@@ -6,7 +6,7 @@
 //
 
 import XCTest
-import GithubRepository
+@testable import GithubRepository
 import Combine
 
 final class RepositoriesViewModelTests: XCTestCase {
@@ -119,6 +119,41 @@ final class RepositoriesViewModelTests: XCTestCase {
         await sut.refresh()
         
         XCTAssertEqual(sut.repositoryItems, [item1, item2])
+    }
+    
+    func test_repositoryItemsAreLoaded_whenSortCalled_sortsRepositoryItemsInDescendingOrder() async {
+        // given
+        let item1 = RepositoryItem(id: 1, userName: "A name", imageURL: URL(string: "http://url")!, repositoryName: "A repo", description: nil, language: nil, stars: nil)
+        let item2 = RepositoryItem(id: 2, userName: "B name", imageURL: URL(string: "http://url")!, repositoryName: "B repo", description: nil, language: nil, stars: nil)
+        let item3 = RepositoryItem(id: 3, userName: "C name", imageURL: URL(string: "http://url")!, repositoryName: "C repo", description: nil, language: nil, stars: nil)
+        let (sut, _) = makeSUT(repositoriesLoaderResult: .success([item1, item2, item3]))
+        sut.isAscending = true
+
+        await sut.viewDidAppear()
+        
+        // when
+        sut.sort()
+        
+        // then
+        XCTAssertEqual(sut.repositoryItems, [item3, item2, item1], "Expected items to be sorted")
+        XCTAssertFalse(sut.isAscending)
+    }
+    
+    func test_repositoryItemsAreLoaded_whenSortCalledOnAscending_() async {
+        // given
+        let item1 = RepositoryItem(id: 1, userName: "A name", imageURL: URL(string: "http://url")!, repositoryName: "A repo", description: nil, language: nil, stars: nil)
+        let item2 = RepositoryItem(id: 2, userName: "B name", imageURL: URL(string: "http://url")!, repositoryName: "B repo", description: nil, language: nil, stars: nil)
+        let item3 = RepositoryItem(id: 3, userName: "C name", imageURL: URL(string: "http://url")!, repositoryName: "C repo", description: nil, language: nil, stars: nil)
+        let (sut, _) = makeSUT(repositoriesLoaderResult: .success([item1, item2, item3]))
+        sut.isAscending = false
+        await sut.viewDidAppear()
+        
+        // when
+        sut.sort()
+        
+        // then
+        XCTAssertEqual(sut.repositoryItems, [item1, item2, item3], "Expected items to be sorted")
+        XCTAssertTrue(sut.isAscending)
     }
     
     // MARK: - Helpers

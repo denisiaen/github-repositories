@@ -18,9 +18,10 @@ final class URLSessionHTTPClientTests: XCTestCase {
     
     func test_getFromURL_performsGETRequestWithURL() async throws {
         let url = anyURL()
+        let request = HTTPRequest(url: url)
         let (sut, session) = makeSUT(result: .success(anyValidResponse()))
         
-        _ = try await sut.get(from: url)
+        _ = try await sut.get(from: request)
         
         XCTAssertEqual(session.requests.count, 1)
         XCTAssertEqual(session.requests.first?.url, url)
@@ -32,7 +33,7 @@ final class URLSessionHTTPClientTests: XCTestCase {
         let (sut, _) = makeSUT(result: .failure(requestError))
         
         do {
-            _ = try await sut.get(from: anyURL())
+            _ = try await sut.get(from: HTTPRequest(url: anyURL()))
             XCTFail("Expected error \(requestError)")
         } catch {
             XCTAssertEqual((error as NSError?)?.domain, requestError.domain)
@@ -41,12 +42,12 @@ final class URLSessionHTTPClientTests: XCTestCase {
     }
     
     func test_getFromURL_failsOnNonHTTPURLResponse() async throws {
-        let url = anyURL()
+        let request = HTTPRequest(url: anyURL())
         let invalidResponse = (Data(), nonHTTPURLResponse())
         let (sut, _) = makeSUT(result: .success(invalidResponse))
         
         do {
-            _ = try await sut.get(from: url)
+            _ = try await sut.get(from: request)
             XCTFail("Expected to throw error")
         } catch {
             XCTAssertTrue(error is UnsupportedURLResponseError)
@@ -58,7 +59,7 @@ final class URLSessionHTTPClientTests: XCTestCase {
         let response = anyValidHTTPResponse()
         let (sut, _) = makeSUT(result: .success((data, response)))
         
-        let receivedValues = try await sut.get(from: anyURL())
+        let receivedValues = try await sut.get(from: HTTPRequest(url: anyURL()))
         
         XCTAssertEqual(receivedValues.0, data)
         XCTAssertEqual(receivedValues.1.url, response.url)

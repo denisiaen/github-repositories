@@ -22,7 +22,7 @@ public class APIRepositoriesLoader: RepositoriesLoader {
     }
     
     public func load() async throws -> [RepositoryItem] {        
-        guard let (data, response) = try? await client.get(from: url) else {
+        guard let (data, response) = try? await client.get(from: HTTPRequest(url: url)) else {
             throw Error.connectivity
         }
         

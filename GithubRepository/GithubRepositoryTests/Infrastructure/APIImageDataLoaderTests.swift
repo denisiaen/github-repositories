@@ -13,7 +13,7 @@ final class APIImageDataLoaderTests: XCTestCase {
     func test_init_doesNotRequestDataFromURL() {
         let (_, client) = makeSUT()
 
-        XCTAssertTrue(client.requestedURLs.isEmpty)
+        XCTAssertTrue(client.requests.isEmpty)
     }
     
     func test_load_requestsDataFromURL() async throws {
@@ -22,7 +22,7 @@ final class APIImageDataLoaderTests: XCTestCase {
 
         _ = try await sut.load(url: url)
         
-        XCTAssertEqual(client.requestedURLs, [url])
+        XCTAssertEqual(client.requests.map{ $0.url }, [url])
     }
     
     func test_loadTwice_requestsDataFromURLTwice() async throws {
@@ -32,7 +32,7 @@ final class APIImageDataLoaderTests: XCTestCase {
         _ = try await sut.load(url: url)
         _ = try await sut.load(url: url)
         
-        XCTAssertEqual(client.requestedURLs, [url, url])
+        XCTAssertEqual(client.requests.map{ $0.url }, [url, url])
     }
     
     func test_load_throwsErrorOnClientError() async {

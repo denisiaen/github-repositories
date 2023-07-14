@@ -20,7 +20,7 @@ public class APIImageDataLoader: ImageDataLoader {
     }
     
     public func load(url: URL) async throws -> Data {
-        guard let (data, response) = try? await client.get(from: url) else {
+        guard let (data, response) = try? await client.get(from: HTTPRequest(url: url)) else {
             throw Error.failed
         }
         
