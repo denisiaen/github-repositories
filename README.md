@@ -43,3 +43,6 @@ Given the customer doesn't have connectivity
 When the customer requests to see the repositories
 Then the app should display an error message
 ```
+
+Thanks to the iOS lead essentials program where I've learnt a lot about how to apply TDD, design patterns and many more concepts.
+https://www.essentialdeveloper.com/
